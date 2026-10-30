@@ -99,6 +99,7 @@
    $('liked-note').textContent='Подборка избранного AnnaKam.';
    $('liked-count').textContent=String(items.length).padStart(2,'0');
    $('liked-count').setAttribute('aria-label',items.length+' композиций');
+   $('liked-nav-count').textContent=String(items.length).padStart(2,'0');
    target.replaceChildren();
    for(const item of items){
     if(!/^[0-9a-f-]{36}$/i.test(item.id)||!item.embedUrl?.startsWith('https://suno.com/embed/'))continue;
