@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-10-31",
+  "collection": "Liked · Избранное",
+  "completeness": "partial",
+  "completenessNote": "Сверены две ссылки, явно присланные Создателем. Авторизованная библиотека Suno не проверена; это не полный список Liked.",
+  "tracks": [
+    {
+      "id": "7a8483f2-73c8-4965-a25c-15b30013310b",
+      "title": "Silent Riff",
+      "artist": "AnnaKam",
+      "source": "Suno embed",
+      "sourceUrl": "https://suno.com/song/7a8483f2-73c8-4965-a25c-15b30013310b?sh=0XjlyIxTg6AsVvYS",
+      "embedUrl": "https://suno.com/embed/7a8483f2-73c8-4965-a25c-15b30013310b"
+    },
+    {
+      "id": "ee06471d-bb7a-47dc-a2f6-e6ba81df9438",
+      "title": "Sudden Stop",
+      "artist": "AnnaKam",
+      "source": "Suno embed",
+      "sourceUrl": "https://suno.com/song/ee06471d-bb7a-47dc-a2f6-e6ba81df9438",
+      "embedUrl": "https://suno.com/embed/ee06471d-bb7a-47dc-a2f6-e6ba81df9438"
+    }
+  ]
+}

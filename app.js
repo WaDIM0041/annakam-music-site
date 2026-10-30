@@ -5,7 +5,7 @@
   {id:'chrono',title:'Chrono Loop Anomaly',file:'audio/chrono.mp3',cover:'chrono',word:'Chrono.',tag:'SOUND EXPLORATIONS · ANNAKAM',duration:123.04}
  ];
  const $=id=>document.getElementById(id),audio=$('audio'),list=$('tracks'),toggle=$('toggle'),seek=$('seek'),queue=$('queue-panel');
- let current=0,requestId=0,buffering=false,failed=false;
+ let current=0,requestId=0,buffering=false,failed=false,sunoActive=false;
  const format=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'—:—';
  const icon=name=>'<svg aria-hidden="true"><use href="#i-'+name+'"/></svg>';
  const cards=new Map();
@@ -44,6 +44,10 @@
   document.querySelectorAll('.queue-track').forEach(q=>{q.classList.toggle('active',q.dataset.play===t.id);q.setAttribute('aria-label',(q.dataset.play===t.id&&playing?'Пауза: ':'Слушать: ')+tracks.find(x=>x.id===q.dataset.play).title);});
   if('mediaSession'in navigator){navigator.mediaSession.playbackState=playing?'playing':'paused';}
  }
+ function pauseLocalForSuno(){
+  sunoActive=true;
+  if(!audio.paused){audio.pause();setBuffer(false);message('Локальный MP3 приостановлен перед открытием Suno.');update();}
+ }
  function updateTime(){
   const duration=Number.isFinite(audio.duration)&&audio.duration>0?audio.duration:tracks[current].duration;
   $('elapsed').textContent=format(audio.currentTime);$('duration').textContent=format(duration);
@@ -57,7 +61,7 @@
  }
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
-  const id=++requestId;failed=false;message('');setBuffer(true);
+  const id=++requestId;failed=false;sunoActive=false;message('');setBuffer(true);
   if(current!==index){current=index;audio.src=tracks[index].file;updateTime();updateMedia();}
   window.AnnaAtmosphere?.connectAudio(audio);
   try{await audio.play();if(id===requestId){setBuffer(false);message('');}}
@@ -78,7 +82,7 @@
  audio.addEventListener('timeupdate',updateTime);
  audio.addEventListener('playing',()=>{failed=false;setBuffer(false);message('');update();});
  audio.addEventListener('waiting',()=>{if(!audio.paused){setBuffer(true);message('Загружаем музыку…');}});
- audio.addEventListener('pause',()=>{setBuffer(false);if(!failed)message('');update();});
+ audio.addEventListener('pause',()=>{setBuffer(false);if(!failed&&!sunoActive)message('');update();});
  audio.addEventListener('play',update);
  audio.addEventListener('ended',()=>{if(current+1<tracks.length)playTrack(current+1);else{update();updateTime();}});
  audio.addEventListener('error',()=>{failed=true;setBuffer(false);message('Аудиофайл недоступен. Повторите попытку или скачайте MP3.',true);update();});
@@ -87,10 +91,33 @@
  search.addEventListener('input',filter);
  $('clear-search').addEventListener('click',()=>{search.value='';filter();search.focus();});
  function showQueue(open){queue.hidden=!open;$('queue').setAttribute('aria-expanded',String(open));$('queue').setAttribute('aria-label',open?'Закрыть очередь треков':'Открыть очередь треков');}
+ async function renderLiked(){
+  const target=$('liked-grid');
+  try{
+   const response=await fetch('liked-tracks.json');if(!response.ok)throw new Error('HTTP '+response.status);
+   const data=await response.json();const items=Array.isArray(data.tracks)?data.tracks:[];
+   $('liked-note').textContent='Подборка избранного AnnaKam.';
+   $('liked-count').textContent=String(items.length).padStart(2,'0');
+   $('liked-count').setAttribute('aria-label',items.length+' композиций');
+   target.replaceChildren();
+   for(const item of items){
+    if(!/^[0-9a-f-]{36}$/i.test(item.id)||!item.embedUrl?.startsWith('https://suno.com/embed/'))continue;
+    const card=document.createElement('article');card.className='liked-card reveal';
+    const head=document.createElement('div');head.className='liked-track-head';
+    const info=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('span');
+    tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
+    const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',pauseLocalForSuno);head.append(info,link);
+    const frame=document.createElement('iframe');frame.title=item.title+' — плеер Suno';frame.src=item.embedUrl;frame.loading='lazy';frame.allow='autoplay; encrypted-media';frame.referrerPolicy='strict-origin-when-cross-origin';frame.addEventListener('focus',pauseLocalForSuno);
+    const source=document.createElement('p');source.className='liked-source';source.textContent='Источник: Suno. Воспроизведение и доступность контролирует Suno.';
+    card.append(head,frame,source);target.append(card);
+   }
+   window.AnnaAtmosphere?.observe();
+  }catch(error){$('liked-note').textContent='Не удалось загрузить избранное. Обновите страницу или откройте треки в Suno.';}
+ }
  $('queue').addEventListener('click',()=>showQueue(queue.hidden));
  $('close-queue').addEventListener('click',()=>{showQueue(false);$('queue').focus();});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!queue.hidden){showQueue(false);$('queue').focus();}});
  document.addEventListener('click',e=>{if(!queue.hidden&&!queue.contains(e.target)&&!$('queue').contains(e.target))showQueue(false);});
  if('mediaSession'in navigator){const actions={play:()=>playTrack(current),pause:()=>audio.pause(),previoustrack:()=>playTrack((current-1+tracks.length)%tracks.length),nexttrack:()=>playTrack((current+1)%tracks.length),seekto:d=>{if(Number.isFinite(audio.duration))audio.currentTime=d.seekTime;}};Object.entries(actions).forEach(([key,handler])=>{try{navigator.mediaSession.setActionHandler(key,handler);}catch{}});}
- render();update();updateTime();updateMedia();document.body.classList.add('enhanced');
+ render();renderLiked();update();updateTime();updateMedia();document.body.classList.add('enhanced');
 })();
