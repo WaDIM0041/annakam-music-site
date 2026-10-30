@@ -1,0 +1,17 @@
+{
+  "release": "annakam-v002-20261030",
+  "domain": "https://wadim0041.github.io/annakam-music-site",
+  "published": false,
+  "hashes": {
+    "index.html": "3884449e04e5a0d4ad334e0bdc9c85626a5e535f762b40b5c3473196ae729cc0",
+    "style.css": "1ba1d425d16344b5b8e8a42cb45ebad55b7aaee3a90a6be6d257ef3254e0e0c6",
+    "app.js": "b4245595bc7a495b996900ef75680701960266cc3decbd251efcbc2df68f72bf",
+    "atmosphere.js": "8bdb206d91ccc50d0f458c236a6936497cf535d51e52e1d785fd1876ba97d97b",
+    "audio/pulse.mp3": "e61ec9804d2657d22772bd126875257dd60d73790f733e51b12ecda0cbe258c1",
+    "audio/chrono.mp3": "9edafe9c1f478c88a5ce8a0e5a017c51559b7ecc9c9ae44b5c70c3b174d43364",
+    "assets/aurora-coast-v001.png": "2c4c08a356a3b5dc5c221718057dbe289c1e228f21e42a33854577d244f295ce",
+    "assets/favicon.svg": "921a061d5c5ea78800073b4716c82a9aca646de2f0b14e61273f1d4c351ed946",
+    "robots.txt": "34af03a9704f0a04ab2a8e866b47e41d978aa7bd1230b5d08a7d3aabab3ebfc2",
+    "sitemap.xml": "6f9dd628752e629d8f9fc53e6e43c4a537d09ac67c2459dfbf76874f96c4dc23"
+  }
+}

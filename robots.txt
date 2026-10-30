@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wadim0041.github.io/annakam-music-site/sitemap.xml
