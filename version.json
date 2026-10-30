@@ -1,7 +1,7 @@
 {
   "release": "annakam-v002-20261030",
   "domain": "https://wadim0041.github.io/annakam-music-site",
-  "published": false,
+  "published": true,
   "hashes": {
     "index.html": "3884449e04e5a0d4ad334e0bdc9c85626a5e535f762b40b5c3473196ae729cc0",
     "style.css": "1ba1d425d16344b5b8e8a42cb45ebad55b7aaee3a90a6be6d257ef3254e0e0c6",
