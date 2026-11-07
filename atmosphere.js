@@ -77,11 +77,12 @@
   }
  }
  let haloEnergy=0;
+ const rayLevels=new Float32Array(36);
  function drawSpectrum(){
   if(!spectrumCtx||!sphereSize)return;
   const c=spectrumCtx,extent=sphereSize,s=extent/1.4,cx=extent/2;
   c.clearRect(0,0,extent,extent);c.lineCap='round';
-  const active=enabled&&audio&&!audio.paused&&analyser;
+  const active=enabled&&audio&&!audio.paused&&!audio.ended&&audio.readyState>=2&&analyser;
   if(active)analyser.getByteFrequencyData(bins);
   const playing=enabled&&audio&&!audio.paused&&!audio.ended&&audio.readyState>=2;
   let sum=0;
@@ -90,9 +91,9 @@
   energy=count?Math.sqrt(sum/count):0;
   const target=playing?.13+energy*.87:0;
   haloEnergy=enabled?haloEnergy+(target-haloEnergy)*(target>haloEnergy?.27:.12):0;
-  const radius=s*(.42+haloEnergy*.24);
+  const radius=s*(.42+haloEnergy*.13);
   const hue=192-149*haloEnergy;
-  const alpha=.15+haloEnergy*.54;
+  const alpha=.12+haloEnergy*.20;
   const halo=c.createRadialGradient(cx,cx,0,cx,cx,radius);
   halo.addColorStop(0,'transparent');
   halo.addColorStop(s*.23/radius,'transparent');
@@ -100,6 +101,30 @@
   halo.addColorStop(.88,'hsla('+hue+',96%,62%,'+(alpha*.08)+')');
   halo.addColorStop(1,'transparent');
   c.fillStyle=halo;c.fillRect(0,0,extent,extent);
+  // Use a softer corona over the halo, with more headroom than the old bars.
+  for(let i=0;i<rayLevels.length;i++){
+   const step=i/(rayLevels.length-1);
+   const raw=active?bins[Math.min(bins.length-1,Math.round(1+step**1.65*47))]/255:0;
+   const level=enabled?rayLevels[i]+(raw-rayLevels[i])*(raw>rayLevels[i]?.58:.23):0;
+   rayLevels[i]=level;
+   if(level<.035)continue;
+   const angle=i/rayLevels.length*Math.PI*2+clock*.13;
+   const dx=Math.cos(angle),dy=Math.sin(angle),start=s*.315;
+   const intensity=level**1.5;
+   const end=start+s*(.024+.295*intensity);
+   const tint=204-164*intensity;
+   const ray=c.createLinearGradient(cx+dx*start,cx+dy*start,cx+dx*end,cx+dy*end);
+   ray.addColorStop(0,'transparent');
+   ray.addColorStop(.2,'hsla('+tint+',100%,71%,'+(.32+intensity*.58)+')');
+   ray.addColorStop(.62,'hsla('+tint+',100%,79%,'+(.14+intensity*.43)+')');
+   ray.addColorStop(1,'transparent');
+   const width=s*(.004+.012*intensity);
+   c.fillStyle=ray;c.beginPath();
+   c.moveTo(cx+dx*start-dy*width, cx+dy*start+dx*width);
+   c.quadraticCurveTo(cx+dx*(start+(end-start)*.5)-dy*width*.8,(cx+dy*(start+(end-start)*.5))+dx*width*.8,cx+dx*end,cx+dy*end);
+   c.quadraticCurveTo(cx+dx*(start+(end-start)*.5)+dy*width*.8,(cx+dy*(start+(end-start)*.5))-dx*width*.8,cx+dx*start+dy*width,cx+dy*start-dx*width);
+   c.fill();
+  }
   // Abstract holographic instrument motifs: driven by their characteristic frequency bands.
   if(active){
    const band=(from,to)=>{let total=0,n=0;for(let j=from;j<to&&j<bins.length;j++){total+=bins[j];n++;}return n?total/n/255:0;};
@@ -150,7 +175,7 @@
   connectAudio(element){
    audio=element;
    try{
-    if(!ctxAudio){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;ctxAudio=new Audio();source=ctxAudio.createMediaElementSource(audio);analyser=ctxAudio.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.85;bins=new Uint8Array(analyser.frequencyBinCount);source.connect(analyser);analyser.connect(ctxAudio.destination);}
+    if(!ctxAudio){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;ctxAudio=new Audio();source=ctxAudio.createMediaElementSource(audio);analyser=ctxAudio.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.55;bins=new Uint8Array(analyser.frequencyBinCount);source.connect(analyser);analyser.connect(ctxAudio.destination);}
     if(ctxAudio.state==='suspended')ctxAudio.resume().catch(()=>{});
    }catch{if(source&&ctxAudio){try{source.disconnect();source.connect(ctxAudio.destination);}catch{}}analyser=null;}
   },
