@@ -89,6 +89,8 @@
  toggle.addEventListener('click',togglePlay);
  $('prev').addEventListener('click',()=>{if(audio.currentTime>3){audio.currentTime=0;updateTime();}else{playTrack((current-1+tracks.length)%tracks.length);}});
  $('next').addEventListener('click',()=>playTrack((current+1)%tracks.length));
+ $('hero-prev').addEventListener('click',()=>{if(audio.currentTime>3){audio.currentTime=0;updateTime();}else{playTrack((current-1+tracks.length)%tracks.length);}});
+ $('hero-next').addEventListener('click',()=>playTrack((current+1)%tracks.length));
  $('retry').addEventListener('click',()=>{audio.load();playTrack(current);});
  seek.addEventListener('input',()=>{if(!seek.disabled){audio.currentTime=(+seek.value/1000)*audio.duration;updateTime();}});
  $('volume').addEventListener('input',()=>{audio.volume=+$('volume').value;audio.muted=false;});
@@ -121,6 +123,7 @@
     if(!/^[0-9a-f-]{36}$/i.test(item.id)||!item.embedUrl?.startsWith('https://suno.com/embed/'))continue;
     const card=document.createElement('article');card.className='liked-card reveal';
     const head=document.createElement('div');head.className='liked-track-head';
+    const preview=document.createElement('img');preview.className='liked-cover';preview.src=item.cover;preview.alt='Обложка: '+item.title;preview.loading='lazy';preview.decoding='async';
     const info=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('span');
     tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
     const actions=document.createElement('div');actions.className='liked-actions';
@@ -134,7 +137,7 @@
      mount.append(frame);card.classList.add('is-active');listen.textContent='Закрыть плеер';listen.setAttribute('aria-pressed','true');activeLikedPlayer={id:item.id,card,button:listen,frame};
     });
     const source=document.createElement('p');source.className='liked-source';source.textContent='Источник: Suno. Воспроизведение и доступность контролирует Suno.';
-    card.append(head,mount,source);target.append(card);
+    head.prepend(preview);card.append(head,mount,source);target.append(card);
    }
    window.AnnaAtmosphere?.observe();
   }catch(error){$('liked-note').textContent='Не удалось загрузить избранное. Обновите страницу или откройте треки в Suno.';}

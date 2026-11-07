@@ -1,13 +1,13 @@
 {
-  "release": "annakam-v013-20261107",
+  "release": "annakam-v015-20261107",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "854d3dc390741c90b5edccbdd348f5923a9cc51d109dc7900803af7582561450",
-    "style.css": "25617237efb00c4906217d941f48457d5de90025893b83bae41187b979a91710",
-    "app.js": "6d809c9417ab734867f72792bfd6af53dcbccb5f9194d0deebeb920a3b99fb84",
+    "index.html": "1bea663e71965264c7ba359b66e8bce184cb9a5ad19816613965f08559f009f5",
+    "style.css": "947fbda80206dea395f53eae2de9931c844dcb581e56eade4c4a61d85b4d6d43",
+    "app.js": "243ff690ecbdd4a6b5871ae9bab8e21bfd7cc9dfc30f468c2e2ee6f8cf844b6e",
     "atmosphere.js": "8bdb206d91ccc50d0f458c236a6936497cf535d51e52e1d785fd1876ba97d97b",
-    "liked-tracks.json": "64a3cc003a495af52d3157bf6d0dd160f894c0f68307163209b68ba24eabcc20",
+    "liked-tracks.json": "464542df3bc790f5f7dde0a8087495f9c68c3daf722c0bfa99f631e9d30d490d",
     "robots.txt": "34af03a9704f0a04ab2a8e866b47e41d978aa7bd1230b5d08a7d3aabab3ebfc2",
     "sitemap.xml": "6f9dd628752e629d8f9fc53e6e43c4a537d09ac67c2459dfbf76874f96c4dc23",
     ".htaccess": "3bc159fe2f83b3511752b39872de505b149163a7a9f462890fc41924854dbfeb",
@@ -26,6 +26,14 @@
     "assets/covers/wake-thanks-ru-1.jpg": "750ee4816464cfcca6e68135408b04cff7bdc62a943c3147f22814f10888b03a",
     "assets/covers/measured-groove.jpg": "21fe1058438d140d72801dfe0d6a05ad293412b1471e8d93a78e2fa5df78f256",
     "assets/covers/own-wave-trance-v9.jpg": "2a7e968cdd58dfc13b59eb704ec214ce38cce69c8c551857afa8fccdb2ac5ba2",
-    "assets/covers/quiet-hour.jpg": "dbe20650e1914c99b025e4dab04bbda212a5793c7f16e162ab44cdf40804aa28"
+    "assets/covers/quiet-hour.jpg": "dbe20650e1914c99b025e4dab04bbda212a5793c7f16e162ab44cdf40804aa28",
+    "assets/covers/liked/7a8483f2-73c8-4965-a25c-15b30013310b.jpg": "ab08bbee62d3542c2175e38b94f1a4570a945b98125a2a3d150411864bdeaac6",
+    "assets/covers/liked/ee06471d-bb7a-47dc-a2f6-e6ba81df9438.jpg": "0510b3fac20c95ae953cbfdac9f2cf5218b48fb952bfe6d74afb23f9aca39709",
+    "assets/covers/liked/f7ad3da6-0062-417e-b5c7-6d5e9fc41873.jpg": "84681f1b69eb8ed7323e3a47da1b3da172e5522eaa09cab64ef40c6917409df1",
+    "assets/covers/liked/5b8f88ea-3744-446d-a17e-93f0870cdf1e.jpg": "1832ab3110432ae2f5916e22fb8fa277cee6f4b27725a638d78e1774e45ab43a",
+    "assets/covers/liked/c490cf3f-92f9-4b2e-8aec-3ef305793666.jpg": "5132fd9b7361c5d596c6a375e1eae27bad0d9bbf7e2e6a207e77b78538d20985",
+    "assets/covers/liked/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0.jpg": "e52b3ebcb93282f6dc2c344dee34bf68a3c89a1897a38c73eb5de39123746923",
+    "assets/covers/liked/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf.jpg": "32d22e3b7d97d5592c6aec82aa4bbe37c0949c8f1bfcb5974b22fbb0205ea707",
+    "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.jpg": "975275c850a7cb524e6c5f20fb8c295ae74acdca5d2fa4cc6aaa74ac261fc4b6"
   }
 }

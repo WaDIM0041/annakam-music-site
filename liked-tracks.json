@@ -10,7 +10,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/song/7a8483f2-73c8-4965-a25c-15b30013310b?sh=0XjlyIxTg6AsVvYS",
-      "embedUrl": "https://suno.com/embed/7a8483f2-73c8-4965-a25c-15b30013310b"
+      "embedUrl": "https://suno.com/embed/7a8483f2-73c8-4965-a25c-15b30013310b",
+      "cover": "assets/covers/liked/7a8483f2-73c8-4965-a25c-15b30013310b.jpg"
     },
     {
       "id": "ee06471d-bb7a-47dc-a2f6-e6ba81df9438",
@@ -18,7 +19,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/song/ee06471d-bb7a-47dc-a2f6-e6ba81df9438",
-      "embedUrl": "https://suno.com/embed/ee06471d-bb7a-47dc-a2f6-e6ba81df9438"
+      "embedUrl": "https://suno.com/embed/ee06471d-bb7a-47dc-a2f6-e6ba81df9438",
+      "cover": "assets/covers/liked/ee06471d-bb7a-47dc-a2f6-e6ba81df9438.jpg"
     },
     {
       "id": "f7ad3da6-0062-417e-b5c7-6d5e9fc41873",
@@ -26,7 +28,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/Q31ew7jVbtUjuF68",
-      "embedUrl": "https://suno.com/embed/f7ad3da6-0062-417e-b5c7-6d5e9fc41873"
+      "embedUrl": "https://suno.com/embed/f7ad3da6-0062-417e-b5c7-6d5e9fc41873",
+      "cover": "assets/covers/liked/f7ad3da6-0062-417e-b5c7-6d5e9fc41873.jpg"
     },
     {
       "id": "5b8f88ea-3744-446d-a17e-93f0870cdf1e",
@@ -34,7 +37,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/3OQLD3DvX9dTqa6T",
-      "embedUrl": "https://suno.com/embed/5b8f88ea-3744-446d-a17e-93f0870cdf1e"
+      "embedUrl": "https://suno.com/embed/5b8f88ea-3744-446d-a17e-93f0870cdf1e",
+      "cover": "assets/covers/liked/5b8f88ea-3744-446d-a17e-93f0870cdf1e.jpg"
     },
     {
       "id": "c490cf3f-92f9-4b2e-8aec-3ef305793666",
@@ -42,7 +46,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/qJ48Z5NW6WmuSG4q",
-      "embedUrl": "https://suno.com/embed/c490cf3f-92f9-4b2e-8aec-3ef305793666"
+      "embedUrl": "https://suno.com/embed/c490cf3f-92f9-4b2e-8aec-3ef305793666",
+      "cover": "assets/covers/liked/c490cf3f-92f9-4b2e-8aec-3ef305793666.jpg"
     },
     {
       "id": "a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0",
@@ -50,7 +55,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/VSLTpwoWfJOLvu5T",
-      "embedUrl": "https://suno.com/embed/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0"
+      "embedUrl": "https://suno.com/embed/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0",
+      "cover": "assets/covers/liked/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0.jpg"
     },
     {
       "id": "66b0692b-3db3-4ab9-8b37-7fb7ae8baacf",
@@ -58,7 +64,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/ckQAcFTwqE6WkZqa",
-      "embedUrl": "https://suno.com/embed/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf"
+      "embedUrl": "https://suno.com/embed/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf",
+      "cover": "assets/covers/liked/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf.jpg"
     },
     {
       "id": "230f7bf9-7efe-4774-b105-526fb30936ee",
@@ -66,7 +73,8 @@
       "artist": "AnnaKam",
       "source": "Suno embed",
       "sourceUrl": "https://suno.com/s/t62Bv6QC7NfyTUpk",
-      "embedUrl": "https://suno.com/embed/230f7bf9-7efe-4774-b105-526fb30936ee"
+      "embedUrl": "https://suno.com/embed/230f7bf9-7efe-4774-b105-526fb30936ee",
+      "cover": "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.jpg"
     }
   ]
 }
