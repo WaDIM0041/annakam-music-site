@@ -1,9 +1,9 @@
 {
-  "release": "annakam-v029-20261108",
+  "release": "annakam-v031-20261108",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "8db50c902771e653b38d5c0056f6d4047446314e9b31c39b903e2a952db3b39a",
+    "index.html": "8172e9814de489effe8ef11f3559b157be037a4ff595a97500afdf7b0a24762c",
     "style.css": "c5fa67553b27154c0d4c88a25bee2765a61a217ab058fe56eef8c785d5f55323",
     "fixes.css": "a94d092690b3af593f2226311e4fc9585087a7f263613489c893ac25f8776297",
     "app.js": "243ff690ecbdd4a6b5871ae9bab8e21bfd7cc9dfc30f468c2e2ee6f8cf844b6e",
