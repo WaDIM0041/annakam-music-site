@@ -89,11 +89,13 @@
   const count=active?Math.min(24,bins.length):0;
   for(let i=0;i<count;i++)sum+=(bins[i]/255)**2;
   energy=count?Math.sqrt(sum/count):0;
-  const target=playing?.13+energy*.87:0;
-  haloEnergy=enabled?haloEnergy+(target-haloEnergy)*(target>haloEnergy?.27:.12):0;
+  const target=playing?Math.max(.78,.78+energy*.22):0;
+  haloEnergy=enabled?haloEnergy+(target-haloEnergy)*(target>haloEnergy?.18:.12):0;
   const radius=s*(.42+haloEnergy*.13);
   const hue=192-149*haloEnergy;
   const alpha=.12+haloEnergy*.20;
+  root.style.setProperty('--star-energy',haloEnergy.toFixed(3));
+  root.style.setProperty('--star-hue',String(Math.round(hue)));
   const halo=c.createRadialGradient(cx,cx,0,cx,cx,radius);
   halo.addColorStop(0,'transparent');
   halo.addColorStop(s*.23/radius,'transparent');
