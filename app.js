@@ -1,11 +1,18 @@
 'use strict';
 (() => {
  const tracks=[
-  {id:'pulse',title:'Пульс Вакума (Vocal)',file:'audio/pulse.mp3',cover:'pulse',word:'Пульс.',tag:'VOCAL · SOUND EXPLORATIONS',duration:217.88},
-  {id:'chrono',title:'Chrono Loop Anomaly',file:'audio/chrono.mp3',cover:'chrono',word:'Chrono.',tag:'SOUND EXPLORATIONS · ANNAKAM',duration:123.04}
+  {"id":"silent-house-trance","title":"Тихий Дом — Trance of the Instruments (Trance RU)","file":"audio/silent-house-trance.mp3","cover":"silent-house-trance","word":"Сирени.","tag":"PROGRESSIVE TRANCE · DARK R&B · DUET","description":"Тёмный утренний дуэт: тишина дома, сирень и свет после ночи.","duration":343.76},
+  {"id": "wake-thanks-violin", "title": "I Wake Up and Give Thanks++Скрипка припев", "file": "audio/wake-thanks-violin.mp3", "cover": "wake-thanks-violin", "word": "Thanks.", "tag": "CINEMATIC ELECTRONIC · VIOLIN", "description":"Светлая электронная композиция с ведущей скрипкой в припеве.", "duration": 333.6},
+  {"id": "wake-thanks-ru-1", "title": "I Wake Up Я просыпаюсь и Благодарю 1", "file": "audio/wake-thanks-ru-1.mp3", "cover": "wake-thanks-ru-1", "word": "Благодарю.", "tag": "AMBIENT POP · GRATITUDE", "description":"Мягкая песня благодарности о новом утре и внутреннем свете.", "duration": 289.6},
+  {"id": "measured-groove", "title": "Measured Groove", "file": "audio/measured-groove.mp3", "cover": "measured-groove", "word": "Groove.", "tag": "MINIMAL GROOVE · ELECTRONIC", "description":"Ровный электронный грув для движения в собственном темпе.", "duration": 227.24},
+  {"id": "own-wave-trance-v9", "title": "На своей волне (Melodic Trance • 76 BPM • 5-Minute Edit • v9)", "file": "audio/own-wave-trance-v9.mp3", "cover": "own-wave-trance-v9", "word": "Волна.", "tag": "MELODIC TRANCE · 76 BPM", "description":"Неспешный мелодичный trance-поток: пространство, дыхание и волна.", "duration": 314},
+  {"id":"quiet-hour","title":"Благодарю за этот тихий час","file":"audio/quiet-hour.mp3","cover":"quiet-hour","word":"Тихий час.","tag":"ATMOSPHERIC ELECTRONIC · SOFT VOCAL","description":"Тёплая пауза среди дня — музыка благодарности и домашнего покоя.","duration":233.84},
+
+  {id:'pulse',title:'Пульс Вакума (Vocal)',file:'audio/pulse.mp3',cover:'pulse',word:'Пульс.',tag:'VOCAL · SOUND EXPLORATIONS',description:'Вокальная электронная композиция о внутреннем импульсе и движении.',duration:217.88},
+  {id:'chrono',title:'Chrono Loop Anomaly',file:'audio/chrono.mp3',cover:'chrono',word:'Chrono.',tag:'MINIMAL ELECTRONIC · SOUND EXPLORATIONS',description:'Короткая звуковая аномалия: петля времени, ритм и цифровое эхо.',duration:123.04}
  ];
  const $=id=>document.getElementById(id),audio=$('audio'),list=$('tracks'),toggle=$('toggle'),seek=$('seek'),queue=$('queue-panel');
- let current=0,requestId=0,buffering=false,failed=false,sunoActive=false;
+ let current=0,requestId=0,buffering=false,failed=false,sunoActive=false,activeLikedPlayer=null;
  const format=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'—:—';
  const icon=name=>'<svg aria-hidden="true"><use href="#i-'+name+'"/></svg>';
  const cards=new Map();
@@ -20,9 +27,9 @@
    const word=document.createElement('span');word.className='cover-word';word.textContent=t.word;word.setAttribute('aria-hidden','true');cover.append(word);
    const play=document.createElement('button');play.className='cover-play';play.dataset.play=t.id;cover.append(play);
    const info=document.createElement('div');info.className='track-info';
-   const names=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('p');
-   tag.className='eyebrow';tag.textContent=t.tag;title.textContent=t.title;artist.className='track-artist';artist.textContent='AnnaKam';
-   const eq=document.createElement('span');eq.className='track-equalizer';eq.setAttribute('aria-hidden','true');eq.innerHTML='<i></i><i></i><i></i>';eq.hidden=true;artist.append(eq);names.append(tag,title,artist);
+   const names=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),description=document.createElement('p'),artist=document.createElement('p');
+   tag.className='eyebrow';tag.textContent=t.tag;title.textContent=t.title;description.className='track-description';description.textContent=t.description;artist.className='track-artist';artist.textContent='AnnaKam';
+   const eq=document.createElement('span');eq.className='track-equalizer';eq.setAttribute('aria-hidden','true');eq.innerHTML='<i></i><i></i><i></i>';eq.hidden=true;artist.append(eq);names.append(tag,title,description,artist);
    const tail=document.createElement('div');tail.className='track-tail';const duration=document.createElement('span');duration.className='track-duration';duration.textContent=format(t.duration)+' / MP3';
    const download=document.createElement('a');download.className='download';download.href=t.file;download.download=t.title+'.mp3';download.setAttribute('aria-label','Скачать '+t.title+' в MP3');download.title='Скачать MP3';download.innerHTML=icon('down');tail.append(duration,download);
    info.append(names,tail);card.append(cover,info);list.append(card);cards.set(t.id,{card,play,eq});
@@ -39,7 +46,7 @@
   $('player-cover').className='mini-cover '+t.cover;
   $('object-state').textContent=playing?'ВЫ НА СВОЕЙ ВОЛНЕ':'ВАША ВОЛНА ЖДЁТ';
   document.querySelector('.sound-button').dataset.play=t.id;document.querySelector('.sound-button').setAttribute('aria-label',(playing?'Пауза: ':'Слушать: ')+t.title);
-  document.querySelector('.core-play').innerHTML=icon(playing?'pause':'play');
+  document.querySelector('.core-play-icon').innerHTML=icon(playing?'pause':'play');
   for(const track of tracks){const c=cards.get(track.id),active=track===t;c.card.classList.toggle('active',active);c.play.innerHTML=icon(active&&playing?'pause':'play');c.play.setAttribute('aria-label',(active&&playing?'Пауза: ':'Слушать: ')+track.title);c.eq.hidden=!active;}
   document.querySelectorAll('.queue-track').forEach(q=>{q.classList.toggle('active',q.dataset.play===t.id);q.setAttribute('aria-label',(q.dataset.play===t.id&&playing?'Пауза: ':'Слушать: ')+tracks.find(x=>x.id===q.dataset.play).title);});
   if('mediaSession'in navigator){navigator.mediaSession.playbackState=playing?'playing':'paused';}
@@ -47,6 +54,14 @@
  function pauseLocalForSuno(){
   sunoActive=true;
   if(!audio.paused){audio.pause();setBuffer(false);message('Локальный MP3 приостановлен перед открытием Suno.');update();}
+ }
+ function stopLikedPlayer(){
+  if(!activeLikedPlayer)return;
+  activeLikedPlayer.frame.remove();
+  activeLikedPlayer.card.classList.remove('is-active');
+  activeLikedPlayer.button.textContent='Слушать в Suno';
+  activeLikedPlayer.button.setAttribute('aria-pressed','false');
+  activeLikedPlayer=null;
  }
  function updateTime(){
   const duration=Number.isFinite(audio.duration)&&audio.duration>0?audio.duration:tracks[current].duration;
@@ -61,6 +76,7 @@
  }
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
+  stopLikedPlayer();
   const id=++requestId;failed=false;sunoActive=false;message('');setBuffer(true);
   if(current!==index){current=index;audio.src=tracks[index].file;updateTime();updateMedia();}
   window.AnnaAtmosphere?.connectAudio(audio);
@@ -107,10 +123,18 @@
     const head=document.createElement('div');head.className='liked-track-head';
     const info=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('span');
     tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
-    const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',pauseLocalForSuno);head.append(info,link);
-    const frame=document.createElement('iframe');frame.title=item.title+' — плеер Suno';frame.src=item.embedUrl;frame.loading='lazy';frame.allow='autoplay; encrypted-media';frame.referrerPolicy='strict-origin-when-cross-origin';frame.addEventListener('focus',pauseLocalForSuno);
+    const actions=document.createElement('div');actions.className='liked-actions';
+    const listen=document.createElement('button');listen.className='liked-play';listen.type='button';listen.textContent='Слушать в Suno';listen.setAttribute('aria-pressed','false');listen.setAttribute('aria-label','Открыть плеер: '+item.title);
+    const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',pauseLocalForSuno);actions.append(listen,link);head.append(info,actions);
+    const mount=document.createElement('div');mount.className='liked-player';
+    listen.addEventListener('click',()=>{
+     if(activeLikedPlayer?.id===item.id){stopLikedPlayer();return;}
+     stopLikedPlayer();pauseLocalForSuno();
+     const frame=document.createElement('iframe');frame.title=item.title+' — плеер Suno';frame.src=item.embedUrl;frame.loading='lazy';frame.allow='autoplay; encrypted-media';frame.referrerPolicy='strict-origin-when-cross-origin';
+     mount.append(frame);card.classList.add('is-active');listen.textContent='Закрыть плеер';listen.setAttribute('aria-pressed','true');activeLikedPlayer={id:item.id,card,button:listen,frame};
+    });
     const source=document.createElement('p');source.className='liked-source';source.textContent='Источник: Suno. Воспроизведение и доступность контролирует Suno.';
-    card.append(head,frame,source);target.append(card);
+    card.append(head,mount,source);target.append(card);
    }
    window.AnnaAtmosphere?.observe();
   }catch(error){$('liked-note').textContent='Не удалось загрузить избранное. Обновите страницу или откройте треки в Suno.';}

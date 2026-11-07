@@ -1,0 +1,14 @@
+Options -Indexes
+DirectoryIndex index.html
+AddType audio/mpeg .mp3
+AddType image/png .png
+AddType image/svg+xml .svg
+AddType application/javascript .js
+<IfModule mod_headers.c>
+ Header always set X-Content-Type-Options "nosniff"
+ Header always set Referrer-Policy "strict-origin-when-cross-origin"
+ Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+ <FilesMatch "\.(html|json)$">
+  Header set Cache-Control "no-cache"
+ </FilesMatch>
+</IfModule>
