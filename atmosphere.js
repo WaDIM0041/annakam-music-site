@@ -12,6 +12,8 @@
  let frameCounter=0,glProgram,gl,texture,uniforms,textureReady=false;
  const landscape=document.getElementById('landscape'),dust=document.getElementById('dust'),spectrum=document.getElementById('spectrum');
  const dustCtx=dust.getContext('2d'), spectrumCtx=spectrum.getContext('2d');
+ const hologram=document.getElementById('instrument-hologram'),holoCtx=hologram.getContext('2d');
+ let holoSize=0;
  let stars=[],size={w:innerWidth,h:innerHeight},sphereSize=0,energy=0;
  const vertex='attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}';
  const fragment=`precision mediump float;
@@ -57,6 +59,7 @@
   dust.width=size.w;dust.height=size.h;
   const box=spectrum.getBoundingClientRect();sphereSize=box.width;const dpr=Math.min(devicePixelRatio||1,1.5);spectrum.width=Math.round(box.width*dpr);spectrum.height=Math.round(box.height*dpr);
   if(spectrumCtx)spectrumCtx.setTransform(dpr,0,0,dpr,0,0);
+  const holoBox=hologram.getBoundingClientRect();holoSize=holoBox.width;hologram.width=Math.round(holoSize*dpr);hologram.height=Math.round(holoSize*dpr);if(holoCtx)holoCtx.setTransform(dpr,0,0,dpr,0,0);
   stars=Array.from({length:coarse.matches||lowPower?18:40},(_,i)=>({x:((i*73.83)%100)/100,y:((i*31.37)%100)/100,r:.5+(i%3)*.35,s:.04+(i%7)*.012}));
   if(gl&&textureReady)drawGL();drawSpectrum();drawDust();
  }
@@ -128,7 +131,8 @@
    c.fill();
   }
   // Abstract holographic instrument motifs: driven by their characteristic frequency bands.
-  if(active){
+  if(holoCtx)holoCtx.clearRect(0,0,holoSize,holoSize);
+  if(active&&holoCtx&&holoSize){
    const band=(from,to)=>{let total=0,n=0;for(let j=from;j<to&&j<bins.length;j++){total+=bins[j];n++;}return n?total/n/255:0;};
    const holograms=[
     {level:band(5,16),hue:30,x:-.31,y:.19,kind:0},   // bass guitar — amber
@@ -136,7 +140,7 @@
     {level:band(32,62),hue:194,x:-.3,y:-.2,kind:2},  // saxophone — electric cyan
     {level:band(60,106),hue:282,x:.3,y:-.2,kind:3}   // violin — violet
    ];
-   holograms.forEach(h=>{const power=Math.max(0,(h.level-.2)/.8);if(power<.06)return;const x=cx+s*h.x,y=cx+s*h.y,scale=s*(.07+power*.045);c.save();c.translate(x,y);c.rotate((clock*.2+h.kind)*.22);c.scale(scale,scale);c.globalAlpha=.16+power*.58;c.lineWidth=1.3/scale;c.strokeStyle='hsla('+h.hue+',100%,72%,1)';c.shadowBlur=14/scale;c.shadowColor='hsla('+h.hue+',100%,70%,1)';c.beginPath();if(h.kind===0){c.arc(-.24,0,.18,0,Math.PI*2);c.moveTo(-.06,-.1);c.lineTo(.58,-.52);c.lineTo(.68,-.47);c.moveTo(.58,-.52);c.lineTo(.72,-.62);}if(h.kind===1){c.arc(-.3,0,.2,0,Math.PI*2);c.moveTo(-.1,0);c.lineTo(.62,0);c.lineTo(.62,.22);c.lineTo(.1,.22);c.moveTo(.62,.11);c.lineTo(.83,.11);}if(h.kind===2){c.moveTo(.1,-.6);c.bezierCurveTo(-.45,-.3,.45,.05,-.12,.5);c.lineTo(.12,.63);c.moveTo(.1,-.6);c.lineTo(.3,-.72);c.arc(.35,-.78,.12,0,Math.PI*2);}if(h.kind===3){c.ellipse(-.18,.14,.2,.32,0,0,Math.PI*2);c.ellipse(.18,.14,.2,.32,0,0,Math.PI*2);c.moveTo(0,-.12);c.lineTo(0,-.78);c.moveTo(-.07,-.78);c.lineTo(.07,-.78);}c.stroke();c.restore();});
+   holograms.sort((a,b)=>b.level-a.level).slice(0,1).forEach(h=>{const power=Math.max(0,(h.level-.2)/.8);if(power<.06)return;const x=holoSize*.5,y=holoSize*.52,scale=holoSize*(.62+power*.12),c=holoCtx;c.save();c.translate(x,y);c.rotate((clock*.2+h.kind)*.22);c.scale(scale,scale);c.globalAlpha=.16+power*.58;c.lineWidth=1.3/scale;c.strokeStyle='hsla('+h.hue+',100%,72%,1)';c.shadowBlur=14/scale;c.shadowColor='hsla('+h.hue+',100%,70%,1)';c.beginPath();if(h.kind===0){c.arc(-.24,0,.18,0,Math.PI*2);c.moveTo(-.06,-.1);c.lineTo(.58,-.52);c.lineTo(.68,-.47);c.moveTo(.58,-.52);c.lineTo(.72,-.62);}if(h.kind===1){c.arc(-.3,0,.2,0,Math.PI*2);c.moveTo(-.1,0);c.lineTo(.62,0);c.lineTo(.62,.22);c.lineTo(.1,.22);c.moveTo(.62,.11);c.lineTo(.83,.11);}if(h.kind===2){c.moveTo(.1,-.6);c.bezierCurveTo(-.45,-.3,.45,.05,-.12,.5);c.lineTo(.12,.63);c.moveTo(.1,-.6);c.lineTo(.3,-.72);c.arc(.35,-.78,.12,0,Math.PI*2);}if(h.kind===3){c.ellipse(-.18,.14,.2,.32,0,0,Math.PI*2);c.ellipse(.18,.14,.2,.32,0,0,Math.PI*2);c.moveTo(0,-.12);c.lineTo(0,-.78);c.moveTo(-.07,-.78);c.lineTo(.07,-.78);}c.stroke();c.restore();});
   }
  }
  function tick(now){
