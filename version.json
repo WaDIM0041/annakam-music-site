@@ -1,10 +1,10 @@
 {
-  "release": "annakam-v016-20261107",
+  "release": "annakam-v017-20261107",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "1bea663e71965264c7ba359b66e8bce184cb9a5ad19816613965f08559f009f5",
-    "style.css": "df070111d88f81923c6ef8e0f7b52811e9e79d206eb65128dbd9322f8ba029c0",
+    "index.html": "04217f829d6237b03513724682879727c04c1295c67be7d1748511740bb4e687",
+    "style.css": "7ad28b0f3d831b649c43f2983e45ebe5023af81c7776663e8ecdefeaf6bb9d8e",
     "app.js": "243ff690ecbdd4a6b5871ae9bab8e21bfd7cc9dfc30f468c2e2ee6f8cf844b6e",
     "atmosphere.js": "8bdb206d91ccc50d0f458c236a6936497cf535d51e52e1d785fd1876ba97d97b",
     "liked-tracks.json": "464542df3bc790f5f7dde0a8087495f9c68c3daf722c0bfa99f631e9d30d490d",
@@ -27,6 +27,8 @@
     "assets/covers/measured-groove.jpg": "21fe1058438d140d72801dfe0d6a05ad293412b1471e8d93a78e2fa5df78f256",
     "assets/covers/own-wave-trance-v9.jpg": "2a7e968cdd58dfc13b59eb704ec214ce38cce69c8c551857afa8fccdb2ac5ba2",
     "assets/covers/quiet-hour.jpg": "dbe20650e1914c99b025e4dab04bbda212a5793c7f16e162ab44cdf40804aa28",
+    "assets/covers/own-wave-trance-v10.png": "3fd85e2ad1f0469e9d89cd00ed3b1cafa33d9accebc52ca200f948822a5a6c15",
+    "assets/covers/quiet-hour-v2.png": "519a31a5268be2b09b01b9bb12c7c7276c6c30364e5f9af05f3fb4ec5907e117",
     "assets/covers/liked/7a8483f2-73c8-4965-a25c-15b30013310b.jpg": "ab08bbee62d3542c2175e38b94f1a4570a945b98125a2a3d150411864bdeaac6",
     "assets/covers/liked/ee06471d-bb7a-47dc-a2f6-e6ba81df9438.jpg": "0510b3fac20c95ae953cbfdac9f2cf5218b48fb952bfe6d74afb23f9aca39709",
     "assets/covers/liked/f7ad3da6-0062-417e-b5c7-6d5e9fc41873.jpg": "84681f1b69eb8ed7323e3a47da1b3da172e5522eaa09cab64ef40c6917409df1",
