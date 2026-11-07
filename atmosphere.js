@@ -79,7 +79,7 @@
  function drawSpectrum(){
   if(!spectrumCtx||!sphereSize)return;
   const c=spectrumCtx,s=sphereSize,cx=s/2,r=s*.365,count=96;
-  c.clearRect(0,0,s,s);c.lineWidth=coarse.matches?1:1.3;c.lineCap='round';
+  c.clearRect(0,0,s,s);c.lineCap='round';
   const active=enabled&&audio&&!audio.paused&&analyser;
   if(active)analyser.getByteFrequencyData(bins);
   let sum=0;
@@ -87,13 +87,23 @@
    const angle=i/count*Math.PI*2-Math.PI/2;
    const frequency=active?bins[Math.floor((i/count)*bins.length*.6)]/255:0;
    sum+=frequency;
-   const idle=(.5+.5*Math.sin(i*.32+(enabled?clock*.28:0)))*s*.016;
-   const length=s*.008+idle+frequency*s*.12;
-   const alpha=.18+(active?frequency*.6:.25+.2*Math.sin(i*.16));
-   c.strokeStyle='rgba(214,239,190,'+alpha+')';c.beginPath();c.moveTo(cx+Math.cos(angle)*r,cx+Math.sin(angle)*r);c.lineTo(cx+Math.cos(angle)*(r+length),cx+Math.sin(angle)*(r+length));c.stroke();
+   const idle=(.5+.5*Math.sin(i*.32+(enabled?clock*.28:0)))*s*.012;
+   const heat=active?Math.min(1,frequency*1.35):0;
+   const flare=Math.pow(Math.max(0,(frequency-.5)/.5),2.2);
+   const length=s*.006+idle+frequency*s*.16+flare*s*.18;
+   const alpha=.13+(active?frequency*.72:.18+.15*Math.sin(i*.16));
+   const hue=198-heat*154;
+   const x1=cx+Math.cos(angle)*r,y1=cx+Math.sin(angle)*r;
+   const x2=cx+Math.cos(angle)*(r+length),y2=cx+Math.sin(angle)*(r+length);
+   const ray=c.createLinearGradient(x1,y1,x2,y2);
+   ray.addColorStop(0,'hsla(196,92%,70%,'+(alpha*.45)+')');
+   ray.addColorStop(.42,'hsla('+hue+',96%,'+(64+heat*18)+'%,'+alpha+')');
+   ray.addColorStop(.72,'hsla('+(Math.max(38,hue-12))+',100%,88%,'+(alpha*(.42+heat*.24))+')');
+   ray.addColorStop(1,'hsla('+(Math.max(38,hue-12))+',100%,92%,'+(alpha*(.06+heat*.1))+')');
+   c.lineWidth=(coarse.matches?1:1.15)+frequency*2.3;c.shadowBlur=active?4+frequency*16:2;c.shadowColor='hsla('+hue+',100%,70%,'+(alpha*.85)+')';c.strokeStyle=ray;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
   }
   energy=active?sum/count:0;
-  c.strokeStyle='rgba(190,225,198,.16)';c.lineWidth=.7;c.beginPath();c.arc(cx,cx,s*.342,0,Math.PI*2);c.stroke();
+  c.shadowBlur=0;c.strokeStyle=active?'hsla('+(190-energy*125)+',92%,74%,'+(.18+energy*.35)+')':'rgba(190,225,198,.16)';c.lineWidth=.7+energy*1.2;c.beginPath();c.arc(cx,cx,s*.342,0,Math.PI*2);c.stroke();
  }
  function tick(now){
   frame=0;if(!enabled||document.hidden)return;
