@@ -76,32 +76,30 @@
    dustCtx.beginPath();dustCtx.arc(x,y,p.r,0,Math.PI*2);dustCtx.fillStyle='rgba(210,238,203,'+(.12+(.5+.5*Math.sin(clock*.35+i))*.25)+')';dustCtx.fill();
   }
  }
+ let haloEnergy=0;
  function drawSpectrum(){
   if(!spectrumCtx||!sphereSize)return;
-  const c=spectrumCtx,s=sphereSize,cx=s/2,r=s*.365,count=96;
-  c.clearRect(0,0,s,s);c.lineCap='round';
+  const c=spectrumCtx,extent=sphereSize,s=extent/1.4,cx=extent/2;
+  c.clearRect(0,0,extent,extent);c.lineCap='round';
   const active=enabled&&audio&&!audio.paused&&analyser;
   if(active)analyser.getByteFrequencyData(bins);
+  const playing=enabled&&audio&&!audio.paused&&!audio.ended&&audio.readyState>=2;
   let sum=0;
-  for(let i=0;i<count;i++){
-   const angle=i/count*Math.PI*2-Math.PI/2;
-   const frequency=active?bins[Math.floor((i/count)*bins.length*.6)]/255:0;
-   sum+=frequency;
-   const idle=(.5+.5*Math.sin(i*.32+(enabled?clock*.28:0)))*s*.012;
-   const heat=active?Math.min(1,frequency*1.35):0;
-   const flare=Math.pow(Math.max(0,(frequency-.5)/.5),2.2);
-   const length=s*.006+idle+frequency*s*.16+flare*s*.18;
-   const alpha=.13+(active?frequency*.72:.18+.15*Math.sin(i*.16));
-   const hue=198-heat*154;
-   const x1=cx+Math.cos(angle)*r,y1=cx+Math.sin(angle)*r;
-   const x2=cx+Math.cos(angle)*(r+length),y2=cx+Math.sin(angle)*(r+length);
-   const ray=c.createLinearGradient(x1,y1,x2,y2);
-   ray.addColorStop(0,'hsla(196,92%,70%,'+(alpha*.45)+')');
-   ray.addColorStop(.42,'hsla('+hue+',96%,'+(64+heat*18)+'%,'+alpha+')');
-   ray.addColorStop(.72,'hsla('+(Math.max(38,hue-12))+',100%,88%,'+(alpha*(.42+heat*.24))+')');
-   ray.addColorStop(1,'hsla('+(Math.max(38,hue-12))+',100%,92%,'+(alpha*(.06+heat*.1))+')');
-   c.lineWidth=(coarse.matches?1:1.15)+frequency*2.3;c.shadowBlur=active?4+frequency*16:2;c.shadowColor='hsla('+hue+',100%,70%,'+(alpha*.85)+')';c.strokeStyle=ray;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();
-  }
+  const count=active?Math.min(24,bins.length):0;
+  for(let i=0;i<count;i++)sum+=(bins[i]/255)**2;
+  energy=count?Math.sqrt(sum/count):0;
+  const target=playing?.13+energy*.87:0;
+  haloEnergy=enabled?haloEnergy+(target-haloEnergy)*(target>haloEnergy?.27:.12):0;
+  const radius=s*(.42+haloEnergy*.24);
+  const hue=192-149*haloEnergy;
+  const alpha=.15+haloEnergy*.54;
+  const halo=c.createRadialGradient(cx,cx,0,cx,cx,radius);
+  halo.addColorStop(0,'transparent');
+  halo.addColorStop(s*.23/radius,'transparent');
+  halo.addColorStop(s*.32/radius,'hsla('+hue+',96%,75%,'+alpha+')');
+  halo.addColorStop(.88,'hsla('+hue+',96%,62%,'+(alpha*.08)+')');
+  halo.addColorStop(1,'transparent');
+  c.fillStyle=halo;c.fillRect(0,0,extent,extent);
   // Abstract holographic instrument motifs: driven by their characteristic frequency bands.
   if(active){
    const band=(from,to)=>{let total=0,n=0;for(let j=from;j<to&&j<bins.length;j++){total+=bins[j];n++;}return n?total/n/255:0;};
@@ -113,8 +111,6 @@
    ];
    holograms.forEach(h=>{const power=Math.max(0,(h.level-.2)/.8);if(power<.06)return;const x=cx+s*h.x,y=cx+s*h.y,scale=s*(.07+power*.045);c.save();c.translate(x,y);c.rotate((clock*.2+h.kind)*.22);c.scale(scale,scale);c.globalAlpha=.16+power*.58;c.lineWidth=1.3/scale;c.strokeStyle='hsla('+h.hue+',100%,72%,1)';c.shadowBlur=14/scale;c.shadowColor='hsla('+h.hue+',100%,70%,1)';c.beginPath();if(h.kind===0){c.arc(-.24,0,.18,0,Math.PI*2);c.moveTo(-.06,-.1);c.lineTo(.58,-.52);c.lineTo(.68,-.47);c.moveTo(.58,-.52);c.lineTo(.72,-.62);}if(h.kind===1){c.arc(-.3,0,.2,0,Math.PI*2);c.moveTo(-.1,0);c.lineTo(.62,0);c.lineTo(.62,.22);c.lineTo(.1,.22);c.moveTo(.62,.11);c.lineTo(.83,.11);}if(h.kind===2){c.moveTo(.1,-.6);c.bezierCurveTo(-.45,-.3,.45,.05,-.12,.5);c.lineTo(.12,.63);c.moveTo(.1,-.6);c.lineTo(.3,-.72);c.arc(.35,-.78,.12,0,Math.PI*2);}if(h.kind===3){c.ellipse(-.18,.14,.2,.32,0,0,Math.PI*2);c.ellipse(.18,.14,.2,.32,0,0,Math.PI*2);c.moveTo(0,-.12);c.lineTo(0,-.78);c.moveTo(-.07,-.78);c.lineTo(.07,-.78);}c.stroke();c.restore();});
   }
-  energy=active?sum/count:0;
-  c.shadowBlur=0;c.strokeStyle=active?'hsla('+(190-energy*125)+',92%,74%,'+(.18+energy*.35)+')':'rgba(190,225,198,.16)';c.lineWidth=.7+energy*1.2;c.beginPath();c.arc(cx,cx,s*.342,0,Math.PI*2);c.stroke();
  }
  function tick(now){
   frame=0;if(!enabled||document.hidden)return;
