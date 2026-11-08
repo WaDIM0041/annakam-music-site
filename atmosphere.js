@@ -14,6 +14,8 @@
  const dustCtx=dust.getContext('2d'), spectrumCtx=spectrum.getContext('2d');
  const hologram=document.getElementById('instrument-hologram'),holoCtx=hologram.getContext('2d');
  const instrumentImages=['bass','trombone','saxophone','violin'].map(name=>{const img=new Image();img.src='assets/holograms/'+name+'.png';return img;});
+ let instrumentCues={};
+ fetch('instrument-cues.json?v=038').then(response=>{if(!response.ok)throw new Error('Instrument cues unavailable');return response.json();}).then(data=>{if(data&&data.version===1&&data.tracks&&typeof data.tracks==='object')instrumentCues=data.tracks;}).catch(()=>{instrumentCues={};});
  let holoSize=0;
  let stars=[],size={w:innerWidth,h:innerHeight},sphereSize=0,energy=0;
  const vertex='attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}';
@@ -141,8 +143,11 @@
     {level:band(32,62),hue:194,x:-.3,y:-.2,kind:2},  // saxophone — electric cyan
     {level:band(60,106),hue:282,x:.3,y:-.2,kind:3}   // violin — violet
    ];
-   const h=holograms[Math.floor(audio.currentTime/8)%holograms.length],img=instrumentImages[h.kind];
-   if(img.complete&&img.naturalWidth){const phase=(audio.currentTime%8)/8,fade=Math.min(1,phase*6,(1-phase)*6),pulse=.7+Math.min(.3,h.level*.5);const scale=Math.min(holoSize*.92/img.naturalWidth,holoSize*.92/img.naturalHeight),w=img.naturalWidth*scale,z=img.naturalHeight*scale;holoCtx.save();holoCtx.globalAlpha=Math.max(0,fade)*pulse;holoCtx.drawImage(img,(holoSize-w)/2,(holoSize-z)/2,w,z);holoCtx.restore();}
+   const track=Object.keys(instrumentCues).find(file=>new URL(file,document.baseURI).href===audio.currentSrc);
+   const cues=track&&Array.isArray(instrumentCues[track])?instrumentCues[track]:[];
+   const cue=cues.find(item=>item&&Number.isFinite(item.start)&&Number.isFinite(item.end)&&item.end>item.start&&audio.currentTime>=item.start&&audio.currentTime<item.end&&['bass','trombone','saxophone','violin'].includes(item.instrument));
+   const kind=cue?['bass','trombone','saxophone','violin'].indexOf(cue.instrument):-1,h=kind>=0?holograms[kind]:null,img=kind>=0?instrumentImages[kind]:null;
+   if(cue&&img&&img.complete&&img.naturalWidth){const fade=Math.min(1,(audio.currentTime-cue.start)/.45,(cue.end-audio.currentTime)/.45),pulse=.7+Math.min(.3,h.level*.5);const scale=Math.min(holoSize*.92/img.naturalWidth,holoSize*.92/img.naturalHeight),w=img.naturalWidth*scale,z=img.naturalHeight*scale;holoCtx.save();holoCtx.globalAlpha=Math.max(0,fade)*pulse;holoCtx.drawImage(img,(holoSize-w)/2,(holoSize-z)/2,w,z);holoCtx.restore();}
   }
  }
  function tick(now){
