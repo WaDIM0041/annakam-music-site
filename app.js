@@ -1,6 +1,7 @@
 'use strict';
 (() => {
  const tracks=[
+  {"id":"this-quiet-hour-deep-slap-house-mix","title":"This Quiet Hour (Deep Slap House Mix)","file":"audio/this-quiet-hour-deep-slap-house-mix.mp3","cover":"this-quiet-hour-deep-slap-house-mix","word":"Quiet hour.","tag":"DEEP SLAP HOUSE · VOCAL","description":"Новая глубокая slap house-версия тихого часа: упругий бас, ночной ритм и вокальная атмосфера.","duration":266.48},
   {"id":"silent-house-trance","title":"Тихий Дом — Trance of the Instruments (Trance RU)","file":"audio/silent-house-trance.mp3","cover":"silent-house-trance","word":"Сирени.","tag":"PROGRESSIVE TRANCE · DARK R&B · DUET","description":"Тёмный утренний дуэт: тишина дома, сирень и свет после ночи.","duration":343.76},
   {"id": "wake-thanks-violin", "title": "I Wake Up and Give Thanks++Скрипка припев", "file": "audio/wake-thanks-violin.mp3", "cover": "wake-thanks-violin", "word": "Thanks.", "tag": "CINEMATIC ELECTRONIC · VIOLIN", "description":"Светлая электронная композиция с ведущей скрипкой в припеве.", "duration": 333.6},
   {"id": "wake-thanks-ru-1", "title": "I Wake Up Я просыпаюсь и Благодарю 1", "file": "audio/wake-thanks-ru-1.mp3", "cover": "wake-thanks-ru-1", "word": "Благодарю.", "tag": "AMBIENT POP · GRATITUDE", "description":"Мягкая песня благодарности о новом утре и внутреннем свете.", "duration": 289.6},
