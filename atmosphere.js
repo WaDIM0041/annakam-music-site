@@ -13,6 +13,7 @@
  const landscape=document.getElementById('landscape'),dust=document.getElementById('dust'),spectrum=document.getElementById('spectrum');
  const dustCtx=dust.getContext('2d'), spectrumCtx=spectrum.getContext('2d');
  const hologram=document.getElementById('instrument-hologram'),holoCtx=hologram.getContext('2d');
+ const instrumentImages=['bass','trombone','saxophone','violin'].map(name=>{const img=new Image();img.src='assets/holograms/'+name+'.png';return img;});
  let holoSize=0;
  let stars=[],size={w:innerWidth,h:innerHeight},sphereSize=0,energy=0;
  const vertex='attribute vec2 p; void main(){gl_Position=vec4(p,0.,1.);}';
@@ -140,7 +141,8 @@
     {level:band(32,62),hue:194,x:-.3,y:-.2,kind:2},  // saxophone — electric cyan
     {level:band(60,106),hue:282,x:.3,y:-.2,kind:3}   // violin — violet
    ];
-   holograms.sort((a,b)=>b.level-a.level).slice(0,1).forEach(h=>{const power=Math.max(0,(h.level-.2)/.8);if(power<.06)return;const x=holoSize*.5,y=holoSize*.52,scale=holoSize*(.62+power*.12),c=holoCtx;c.save();c.translate(x,y);c.rotate((clock*.2+h.kind)*.22);c.scale(scale,scale);c.globalAlpha=.16+power*.58;c.lineWidth=1.3/scale;c.strokeStyle='hsla('+h.hue+',100%,72%,1)';c.shadowBlur=14/scale;c.shadowColor='hsla('+h.hue+',100%,70%,1)';c.beginPath();if(h.kind===0){c.arc(-.24,0,.18,0,Math.PI*2);c.moveTo(-.06,-.1);c.lineTo(.58,-.52);c.lineTo(.68,-.47);c.moveTo(.58,-.52);c.lineTo(.72,-.62);}if(h.kind===1){c.arc(-.3,0,.2,0,Math.PI*2);c.moveTo(-.1,0);c.lineTo(.62,0);c.lineTo(.62,.22);c.lineTo(.1,.22);c.moveTo(.62,.11);c.lineTo(.83,.11);}if(h.kind===2){c.moveTo(.1,-.6);c.bezierCurveTo(-.45,-.3,.45,.05,-.12,.5);c.lineTo(.12,.63);c.moveTo(.1,-.6);c.lineTo(.3,-.72);c.arc(.35,-.78,.12,0,Math.PI*2);}if(h.kind===3){c.ellipse(-.18,.14,.2,.32,0,0,Math.PI*2);c.ellipse(.18,.14,.2,.32,0,0,Math.PI*2);c.moveTo(0,-.12);c.lineTo(0,-.78);c.moveTo(-.07,-.78);c.lineTo(.07,-.78);}c.stroke();c.restore();});
+   const h=holograms[Math.floor(audio.currentTime/8)%holograms.length],img=instrumentImages[h.kind];
+   if(img.complete&&img.naturalWidth){const phase=(audio.currentTime%8)/8,fade=Math.min(1,phase*6,(1-phase)*6),pulse=.7+Math.min(.3,h.level*.5);const scale=Math.min(holoSize*.92/img.naturalWidth,holoSize*.92/img.naturalHeight),w=img.naturalWidth*scale,z=img.naturalHeight*scale;holoCtx.save();holoCtx.globalAlpha=Math.max(0,fade)*pulse;holoCtx.drawImage(img,(holoSize-w)/2,(holoSize-z)/2,w,z);holoCtx.restore();}
   }
  }
  function tick(now){
