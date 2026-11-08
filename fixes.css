@@ -1,5 +1,19 @@
 /* Last-mile responsive overrides: preserve the AK star, compact only its play control. */
 #spectrum{inset:-20%;width:140%;height:140%}
+@media (max-width:800px), (pointer:coarse){
+ .world{background-image:url('assets/aurora-coast-mobile.webp')}
+ .world canvas{display:none}
+ .catalog,.player,.track .cover-play,.queue-panel,.sound-core,.effects-button{
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+ }
+ .motion-on .reveal,.motion-on .reveal.waiting,.motion-on .entrance{
+  opacity:1;
+  transform:none;
+  transition:none;
+  animation:none;
+ }
+}
 .hero .hero-note{font-size:14px;letter-spacing:3px;gap:24px}
 .hero-note .tiny-wave{height:34px;gap:6px;flex:none}
 .hero-note .tiny-wave i{width:4px;height:24px}

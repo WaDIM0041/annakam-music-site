@@ -123,7 +123,12 @@
     if(!/^[0-9a-f-]{36}$/i.test(item.id)||!item.embedUrl?.startsWith('https://suno.com/embed/'))continue;
     const card=document.createElement('article');card.className='liked-card reveal';
     const head=document.createElement('div');head.className='liked-track-head';
-    const preview=document.createElement('img');preview.className='liked-cover';preview.src=item.cover;preview.alt='Обложка: '+item.title;preview.loading='lazy';preview.decoding='async';
+    const preview=document.createElement('img');
+    preview.className='liked-cover';
+    preview.alt='Обложка: '+item.title;
+    preview.decoding='async';
+    preview.fetchPriority='low';
+    preview.src=item.cover;
     const info=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('span');
     tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
     const actions=document.createElement('div');actions.className='liked-actions';

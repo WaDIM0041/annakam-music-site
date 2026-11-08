@@ -3,6 +3,7 @@
  const root=document.documentElement, body=document.body;
  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
  const coarse=matchMedia('(pointer: coarse)');
+ const lightLayout=matchMedia('(max-width: 800px), (pointer: coarse)');
  const lowPower=navigator.hardwareConcurrency>0&&navigator.hardwareConcurrency<=4;
  const button=document.getElementById('effects'), world=document.querySelector('.world');
  let preference=true;
@@ -13,7 +14,8 @@
  const landscape=document.getElementById('landscape'),dust=document.getElementById('dust'),spectrum=document.getElementById('spectrum');
  const dustCtx=dust.getContext('2d'), spectrumCtx=spectrum.getContext('2d');
  const hologram=document.getElementById('instrument-hologram'),holoCtx=hologram.getContext('2d');
- const instrumentImages=['bass','trombone','saxophone','violin'].map(name=>{const img=new Image();img.src='assets/holograms/'+name+'.png';return img;});
+ const instrumentNames=['bass','trombone','saxophone','violin'];
+ const instrumentImages=new Map();
  let instrumentCues={};
  fetch('instrument-cues.json?v=038').then(response=>{if(!response.ok)throw new Error('Instrument cues unavailable');return response.json();}).then(data=>{if(data&&data.version===1&&data.tracks&&typeof data.tracks==='object')instrumentCues=data.tracks;}).catch(()=>{instrumentCues={};});
  let holoSize=0;
@@ -40,6 +42,7 @@
  }`;
  function shader(type,code){const s=gl.createShader(type);gl.shaderSource(s,code);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){gl.deleteShader(s);throw new Error('Shader unavailable');}return s;}
  function initGL(){
+  if(lightLayout.matches||gl)return;
   try{
    gl=landscape.getContext('webgl',{alpha:false,antialias:false,depth:false,powerPreference:'low-power',preserveDrawingBuffer:true});
    if(!gl)return;
@@ -58,8 +61,12 @@
  function resize(){
   size.w=document.documentElement.clientWidth;size.h=innerHeight;
   const ratio=Math.min(devicePixelRatio||1,coarse.matches?1:1.25),scale=Math.min(1,1440/(size.w*ratio));
-  landscape.width=Math.round(size.w*ratio*scale);landscape.height=Math.round(size.h*ratio*scale);
-  dust.width=size.w;dust.height=size.h;
+  if(!lightLayout.matches){
+   landscape.width=Math.round(size.w*ratio*scale);
+   landscape.height=Math.round(size.h*ratio*scale);
+   dust.width=size.w;
+   dust.height=size.h;
+  }
   const box=spectrum.getBoundingClientRect();sphereSize=box.width;const dpr=Math.min(devicePixelRatio||1,1.5);spectrum.width=Math.round(box.width*dpr);spectrum.height=Math.round(box.height*dpr);
   if(spectrumCtx)spectrumCtx.setTransform(dpr,0,0,dpr,0,0);
   const holoBox=hologram.getBoundingClientRect();holoSize=holoBox.width;hologram.width=Math.round(holoSize*dpr);hologram.height=Math.round(holoSize*dpr);if(holoCtx)holoCtx.setTransform(dpr,0,0,dpr,0,0);
@@ -67,7 +74,7 @@
   if(gl&&textureReady)drawGL();drawSpectrum();drawDust();
  }
  function drawGL(){
-  if(!gl||!textureReady||gl.isContextLost())return;
+  if(lightLayout.matches||!gl||!textureReady||gl.isContextLost())return;
   gl.viewport(0,0,landscape.width,landscape.height);gl.useProgram(glProgram);
   const aspect=landscape.width/landscape.height,ia=size.imageAspect||1.777;
   gl.uniform2f(uniforms.resolution,landscape.width,landscape.height);
@@ -77,7 +84,7 @@
   gl.uniform1i(uniforms.picture,0);gl.drawArrays(gl.TRIANGLES,0,6);
  }
  function drawDust(){
-  if(!dustCtx)return;dustCtx.clearRect(0,0,dust.width,dust.height);if(!enabled)return;
+  if(lightLayout.matches||!dustCtx)return;dustCtx.clearRect(0,0,dust.width,dust.height);if(!enabled)return;
   for(let i=0;i<stars.length;i++){const p=stars[i],x=((p.x*size.w+Math.sin(clock*p.s+i)*18+pointer.x*7)%size.w+size.w)%size.w,y=((p.y*size.h-clock*p.s*5)%size.h+size.h)%size.h;
    dustCtx.beginPath();dustCtx.arc(x,y,p.r,0,Math.PI*2);dustCtx.fillStyle='rgba(210,238,203,'+(.12+(.5+.5*Math.sin(clock*.35+i))*.25)+')';dustCtx.fill();
   }
@@ -146,7 +153,14 @@
    const track=Object.keys(instrumentCues).find(file=>new URL(file,document.baseURI).href===audio.currentSrc);
    const cues=track&&Array.isArray(instrumentCues[track])?instrumentCues[track]:[];
    const cue=cues.find(item=>item&&Number.isFinite(item.start)&&Number.isFinite(item.end)&&item.end>item.start&&audio.currentTime>=item.start&&audio.currentTime<item.end&&['bass','trombone','saxophone','violin'].includes(item.instrument));
-   const kind=cue?['bass','trombone','saxophone','violin'].indexOf(cue.instrument):-1,h=kind>=0?holograms[kind]:null,img=kind>=0?instrumentImages[kind]:null;
+   const kind=cue?instrumentNames.indexOf(cue.instrument):-1;
+   const h=kind>=0?holograms[kind]:null;
+   if(kind>=0&&!instrumentImages.has(kind)){
+    const image=new Image();
+    image.src='assets/holograms/'+instrumentNames[kind]+'.png';
+    instrumentImages.set(kind,image);
+   }
+   const img=instrumentImages.get(kind);
    if(cue&&img&&img.complete&&img.naturalWidth){const fade=Math.min(1,(audio.currentTime-cue.start)/.45,(cue.end-audio.currentTime)/.45),pulse=.7+Math.min(.3,h.level*.5);const scale=Math.min(holoSize*.92/img.naturalWidth,holoSize*.92/img.naturalHeight),w=img.naturalWidth*scale,z=img.naturalHeight*scale;holoCtx.save();holoCtx.globalAlpha=Math.max(0,fade)*pulse;holoCtx.drawImage(img,(holoSize-w)/2,(holoSize-z)/2,w,z);holoCtx.restore();}
   }
  }
@@ -171,6 +185,7 @@
  }
  button.addEventListener('click',()=>{if(reduce.matches)return;preference=!preference;try{localStorage.setItem('annakam-effects',preference?'on':'off');}catch{}update();});
  reduce.addEventListener('change',update);coarse.addEventListener('change',resize);
+ lightLayout.addEventListener('change',()=>{initGL();resize();observe();});
  document.addEventListener('visibilitychange',()=>{body.classList.toggle('tab-hidden',document.hidden);schedule();});
  let resizeTimer;addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,150);});
  addEventListener('pointermove',e=>{if(!enabled||coarse.matches||lowPower)return;target.x=(e.clientX/innerWidth-.5)*2;target.y=(e.clientY/innerHeight-.5)*2;},{passive:true});
@@ -183,7 +198,14 @@
  },{passive:true});
  document.addEventListener('pointerout',e=>{const magnetic=e.target.closest('.magnetic'),card=e.target.closest('.track');if(magnetic&&!magnetic.contains(e.relatedTarget))magnetic.style.removeProperty('transform');if(card&&!card.contains(e.relatedTarget))card.style.removeProperty('transform');});
  const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('waiting');observer.unobserve(e.target);}});},{threshold:.08}):null;
- function observe(){if(observer)document.querySelectorAll('.reveal:not([data-observed])').forEach(n=>{n.dataset.observed='true';if(n.getBoundingClientRect().top>innerHeight+20)n.classList.add('waiting');observer.observe(n);});}
+ function observe(){
+  if(lightLayout.matches||!observer)return;
+  document.querySelectorAll('.reveal:not([data-observed])').forEach(n=>{
+   n.dataset.observed='true';
+   if(n.getBoundingClientRect().top>innerHeight+20)n.classList.add('waiting');
+   observer.observe(n);
+  });
+ }
  window.AnnaAtmosphere={
   connectAudio(element){
    audio=element;
