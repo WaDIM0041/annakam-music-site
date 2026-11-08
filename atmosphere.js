@@ -117,9 +117,9 @@
    rayLevels[i]=level;
    if(level<.035)continue;
    const angle=i/rayLevels.length*Math.PI*2+clock*.13;
-   const dx=Math.cos(angle),dy=Math.sin(angle),start=s*.315;
+   const dx=Math.cos(angle),dy=Math.sin(angle),start=s*.252;
    const intensity=level**1.5;
-   const end=start+s*(.024+.295*intensity);
+   const end=s*(.339+.295*intensity);
    const tint=204-164*intensity;
    const ray=c.createLinearGradient(cx+dx*start,cx+dy*start,cx+dx*end,cx+dy*end);
    ray.addColorStop(0,'transparent');
