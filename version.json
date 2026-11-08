@@ -1,11 +1,11 @@
 {
-  "release": "annakam-v040-20261108",
+  "release": "annakam-v041-20261108",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "a11e0f1d45932e9226208a76b23093b0cdd7e230709d7633523849b2f4884d46",
+    "index.html": "011001b4d1bba4812a31c3bd7760f54505dae9625d7828ec1cd1243672da0440",
     "style.css": "c5fa67553b27154c0d4c88a25bee2765a61a217ab058fe56eef8c785d5f55323",
-    "fixes.css": "da87c6134cdb4cf8634bf7d24bd6c76a064838ffac8c66f080927cea8f377932",
+    "fixes.css": "49c72765e41206043b6156bc7fa794410678232dc25bbadbd745a4b2b089dadc",
     "app.js": "243ff690ecbdd4a6b5871ae9bab8e21bfd7cc9dfc30f468c2e2ee6f8cf844b6e",
     "atmosphere.js": "39f2db6a95adc68b3f6838443e06b3ec65a1179771c1db8801a024cb4a2105ab",
     "liked-tracks.json": "464542df3bc790f5f7dde0a8087495f9c68c3daf722c0bfa99f631e9d30d490d",
