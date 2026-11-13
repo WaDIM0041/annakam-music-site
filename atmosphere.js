@@ -128,17 +128,22 @@
    const intensity=level**1.5;
    const end=s*(.339+.295*intensity);
    const tint=204-164*intensity;
-   const ray=c.createLinearGradient(cx+dx*start,cx+dy*start,cx+dx*end,cx+dy*end);
-   ray.addColorStop(0,'transparent');
-   ray.addColorStop(.2,'hsla('+tint+',100%,71%,'+(.32+intensity*.58)+')');
-   ray.addColorStop(.62,'hsla('+tint+',100%,79%,'+(.14+intensity*.43)+')');
-   ray.addColorStop(1,'transparent');
-   const width=s*(.004+.012*intensity);
-   c.fillStyle=ray;c.beginPath();
-   c.moveTo(cx+dx*start-dy*width, cx+dy*start+dx*width);
-   c.quadraticCurveTo(cx+dx*(start+(end-start)*.5)-dy*width*.8,(cx+dy*(start+(end-start)*.5))+dx*width*.8,cx+dx*end,cx+dy*end);
-   c.quadraticCurveTo(cx+dx*(start+(end-start)*.5)+dy*width*.8,(cx+dy*(start+(end-start)*.5))-dx*width*.8,cx+dx*start+dy*width,cx+dy*start-dx*width);
-   c.fill();
+   const halfLength=(end-start)/2;
+   const halfWidth=s*(.009+.017*intensity);
+   const opacity=.18+.38*intensity;
+   const color=(alpha)=>`hsla(${tint},100%,76%,${alpha})`;
+   c.save();
+   c.translate(cx+dx*(start+halfLength),cy+dy*(start+halfLength));
+   c.rotate(angle);
+   c.scale(halfLength,halfWidth);
+   // Fade both across the beam and toward its tips, leaving no hard outline.
+   const ray=c.createRadialGradient(0,0,0,0,0,1);
+   ray.addColorStop(0,color(opacity));
+   ray.addColorStop(.35,color(opacity*.63));
+   ray.addColorStop(.7,color(opacity*.15));
+   ray.addColorStop(1,color(0));
+   c.fillStyle=ray;c.fillRect(-1,-1,2,2);
+   c.restore();
   }
   // Abstract holographic instrument motifs: driven by their characteristic frequency bands.
   if(holoCtx)holoCtx.clearRect(0,0,holoSize,holoSize);
