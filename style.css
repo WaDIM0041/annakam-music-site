@@ -64,3 +64,6 @@
 .measured-groove .cover-number,.measured-groove .cover-note,.measured-groove .cover-word,.measured-groove .cover-orbit,.wake-thanks-violin .cover-number,.wake-thanks-violin .cover-note,.wake-thanks-violin .cover-word{display:none}
 
 .wake-thanks-violin .cover-art{background:#0b2029 url("assets/covers/wake-thanks-city-v2.png") center/contain no-repeat}.mini-cover.wake-thanks-violin{background:url("assets/covers/wake-thanks-city-v2.png") center/cover no-repeat}
+
+/* Пейзажи плавно сменяются поверх живого фонового слоя. */
+.landscape-slide{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:0;pointer-events:none}.landscape-fjord{background-image:url("assets/landscape-fjord-v1.webp")}.landscape-coast{background-image:url("assets/landscape-coast-v1.webp")}.motion-on .landscape-fjord{animation:landscape-cycle 90s linear infinite}.motion-on .landscape-coast{animation:landscape-cycle 90s linear 30s infinite}@keyframes landscape-cycle{0%,3%{opacity:0} 6%,30%{opacity:1} 33%,100%{opacity:0}}@media(prefers-reduced-motion:reduce){.landscape-slide{animation:none!important;opacity:0!important}}
