@@ -62,3 +62,5 @@
 .wake-thanks-violin .cover-art{inset:0;background:#0b2029 url("assets/covers/wake-thanks-violin.jpg") center/contain no-repeat}
 .track:hover .measured-groove .cover-art,.track:hover .wake-thanks-violin .cover-art{transform:none}
 .measured-groove .cover-number,.measured-groove .cover-note,.measured-groove .cover-word,.measured-groove .cover-orbit,.wake-thanks-violin .cover-number,.wake-thanks-violin .cover-note,.wake-thanks-violin .cover-word{display:none}
+
+.wake-thanks-violin .cover-art{background:#0b2029 url("assets/covers/wake-thanks-city-v2.png") center/contain no-repeat}.mini-cover.wake-thanks-violin{background:url("assets/covers/wake-thanks-city-v2.png") center/cover no-repeat}

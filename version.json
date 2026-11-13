@@ -1,10 +1,10 @@
 {
-  "release": "annakam-v048-20261114",
+  "release": "annakam-v049-20261114",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "81ca2131d037e53ff66145cc88dd5ef487de9796a1d4c9bff2f04b1a221840d7",
-    "style.css": "4c901cd6db517db9bc7b573f8abb90314eb69f07c8f2986508364f899199dd4f",
+    "index.html": "4583ae512c4c65b20f9f22e35d82a005fd7311fad8b6eaf373aef963c12e96f3",
+    "style.css": "ea5a7de09a237a847056e94a065b7b889b13e97e685fd22e8933bdc5c64b3d2a",
     "fixes.css": "b2493681e2300cb40ffd3f6a44081853de1fdede05d412f1ef4a2fd720967e33",
     "app.js": "f60bac175dc40dae394e2f2600b37ce9b6084de7c1031f85d1753e2e9fe29624",
     "atmosphere.js": "4d1dd45872034fad8236995073c077e6bbcc6c7754b0c5ea6f757c4418fcd44e",
@@ -37,6 +37,7 @@
     "assets/covers/this-quiet-hour-deep-slap-house-mix.jpg": "40d761ed13cc35c54fcd1f68913d3e294134d0d0f196e86f300f15272aa79457",
     "assets/covers/silent-house-trance.jpg": "8b3fe1f2217957309713241ecf00b5a4b48432e2d1d6171d0bf11b0743fa3176",
     "assets/covers/wake-thanks-violin.jpg": "8bb2ab50c97278f76b02cb70ca940d0810345973271d4d0921734c10e5d24a89",
+    "assets/covers/wake-thanks-city-v2.png": "96c274ce9a85f6ba98b05d5f835396a1e8af768ee32cd7426fefb8a885b073ae",
     "assets/covers/wake-thanks-ru-1.jpg": "750ee4816464cfcca6e68135408b04cff7bdc62a943c3147f22814f10888b03a",
     "assets/covers/measured-groove.jpg": "21fe1058438d140d72801dfe0d6a05ad293412b1471e8d93a78e2fa5df78f256",
     "assets/covers/own-wave-trance-v9.jpg": "2a7e968cdd58dfc13b59eb704ec214ce38cce69c8c551857afa8fccdb2ac5ba2",
