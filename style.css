@@ -49,9 +49,9 @@
 
 @media(max-width:600px){.object-orbit{inset:12% 4%}.sound-object{overflow:clip;padding:1px}}
 
-.winter-evening-vocal-trance .cover-art,.mini-cover.winter-evening-vocal-trance{background:linear-gradient(180deg,#07121b08,#07121b65),url("assets/covers/winter-evening-vocal-trance.png") center/cover}
+.winter-evening-vocal-trance .cover-art,.mini-cover.winter-evening-vocal-trance{background:linear-gradient(180deg,#07121b08,#07121b65),url("assets/covers/winter-evening-wide-v2.png") center/cover}
 
 /* Показываем обложку целиком, в том числе при наведении. */
-.winter-evening-vocal-trance .cover-art{inset:0;background:#0b2029 url("assets/covers/winter-evening-vocal-trance.png") center/contain no-repeat}
+.winter-evening-vocal-trance .cover-art{inset:0;background:#0b2029 url("assets/covers/winter-evening-wide-v2.png") center/contain no-repeat}
 .track:hover .winter-evening-vocal-trance .cover-art{transform:none}
 .winter-evening-vocal-trance .cover-number,.winter-evening-vocal-trance .cover-note,.winter-evening-vocal-trance .cover-word{display:none}
