@@ -1,6 +1,7 @@
 'use strict';
 (() => {
  const tracks=[
+  {"id":"winter-evening-vocal-trance","title":"Зимний вечер (Vocal Trance)","file":"audio/winter-evening-vocal-trance.mp3","cover":"winter-evening-vocal-trance","word":"Зимний вечер.","tag":"VOCAL TRANCE · ELECTRONIC","description":"Вокальный транс с зимним настроением и мелодичным электронным звучанием.","duration":387.21},
   {"id":"this-quiet-hour-deep-slap-house-mix","title":"This Quiet Hour (Deep Slap House Mix)","file":"audio/this-quiet-hour-deep-slap-house-mix.mp3","cover":"this-quiet-hour-deep-slap-house-mix","word":"Quiet hour.","tag":"DEEP SLAP HOUSE · VOCAL","description":"Новая глубокая slap house-версия тихого часа: упругий бас, ночной ритм и вокальная атмосфера.","duration":266.48},
   {"id": "measured-groove", "title": "Measured Groove", "file": "audio/measured-groove.mp3", "cover": "measured-groove", "word": "Groove.", "tag": "MINIMAL GROOVE · ELECTRONIC", "description":"Ровный электронный грув для движения в собственном темпе.", "duration": 227.24},
   {"id":"silent-house-trance","title":"Тихий Дом — Trance of the Instruments (Trance RU)","file":"audio/silent-house-trance.mp3","cover":"silent-house-trance","word":"Сирени.","tag":"PROGRESSIVE TRANCE · DARK R&B · DUET","description":"Тёмный утренний дуэт: тишина дома, сирень и свет после ночи.","duration":343.76},
