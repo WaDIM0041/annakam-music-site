@@ -1,10 +1,10 @@
 {
-  "release": "annakam-v051-20261114",
+  "release": "annakam-v053-20261114",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "f5328b42814352c72b3c0182c911cc6d660baa29017d518bc30b39dd7ca6174d",
-    "style.css": "dc3f717ac0323a5ca91a2f2aa80eba95daf5bffef6a12d20ec2c4783bf0a2b8c",
+    "index.html": "030d70df7fc701e1be96952ed48c4ad38a309a049d2fc34d9b46e2d12696f727",
+    "style.css": "18a3a82f38fcb81715e399cbead0df68c45b067b4caffeeefb5674e1fce517dc",
     "fixes.css": "b2493681e2300cb40ffd3f6a44081853de1fdede05d412f1ef4a2fd720967e33",
     "app.js": "f60bac175dc40dae394e2f2600b37ce9b6084de7c1031f85d1753e2e9fe29624",
     "atmosphere.js": "4d1dd45872034fad8236995073c077e6bbcc6c7754b0c5ea6f757c4418fcd44e",
@@ -28,6 +28,8 @@
     "assets/landscape-fjord-v1.webp": "46c0c18ceceec9bcb99ab11b45837b9a28926c7974a16709e9e0fa68870489bd",
     "assets/landscape-coast-v1.webp": "a68bd5f53d8cb4be7d2b02a0494888d28453be79c0897cbbc0366b0d05456a24",
     "assets/landscape-kamchatka-volcanoes-v1.webp": "b7006c4de731cc0ec3ab617dd3d267566e57dae72db7e19d0b1927d48d91f7ec",
+    "assets/landscape-kamchatka-stars-v2.webp": "18918dc490bd140e9d1bf7954539aeb2dfc6a1557f1e0e5bc268c92392bccac9",
+    "assets/landscape-kamchatka-stars-v3.webp": "5053e28bcd62e4af9c971462beeb66ebb210cdce4ce7b35d6682f5e9989621bf",
     "assets/favicon.svg": "921a061d5c5ea78800073b4716c82a9aca646de2f0b14e61273f1d4c351ed946",
     "assets/holograms/bass.png": "832c1715b16d78373667ccd49885d1d751302583d0cbc9196d02392a4ba56fbc",
     "assets/holograms/trombone.png": "ea05b5c460cac4011c522e11c0a133577e7f39d600c0aaf5413c53dcb11a1b05",
