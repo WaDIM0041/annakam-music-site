@@ -138,7 +138,7 @@
    const opacity=.32+.52*intensity+.12*beatPulse;
    const color=(alpha)=>`hsla(${tint},100%,76%,${alpha})`;
    c.save();
-   c.translate(cx+dx*(start+halfLength),cy+dy*(start+halfLength));
+   c.translate(cx+dx*(start+halfLength),cx+dy*(start+halfLength));
    c.rotate(angle);
    c.scale(halfLength,halfWidth);
    // Fade both across the beam and toward its tips, leaving no hard outline.
