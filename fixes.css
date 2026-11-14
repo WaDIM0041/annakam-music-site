@@ -63,8 +63,27 @@
 .servants-of-earth .cover-art{inset:0;background:#0b2029 url("assets/covers/servants-of-earth.png") center/contain no-repeat}.mini-cover.servants-of-earth{background:url("assets/covers/servants-of-earth.png") center/cover no-repeat}.track:hover .servants-of-earth .cover-art{transform:none}.servants-of-earth .cover-number,.servants-of-earth .cover-note,.servants-of-earth .cover-word,.servants-of-earth .cover-orbit{display:none}
 
 /* Единый горизонтальный формат карточек и обложка без полей. */
-.cover{aspect-ratio:1.75!important}.servants-of-earth .cover-art{background-image:url("assets/covers/servants-of-earth-wide-v2.png")}.mini-cover.servants-of-earth{background-image:url("assets/covers/servants-of-earth-wide-v2.png")}
+.cover{aspect-ratio:1.75!important}.servants-of-earth .cover-art{background-image:url("assets/covers/servants-of-earth-wide-v2.webp")}.mini-cover.servants-of-earth{background-image:url("assets/covers/servants-of-earth-wide-v2.webp")}
 
 .site-share,.share-track{border:1px solid #b9d9cd66;border-radius:999px;background:#17363dcc;color:#e8f2dc;cursor:pointer;font:inherit;transition:background .2s,color .2s}.site-share{padding:11px 17px;font-size:11px;white-space:nowrap}.share-track{padding:8px 11px;font-size:10px;white-space:nowrap}.site-share:hover,.share-track:hover{background:#d8edb6;color:#17332e}.site-share:focus-visible,.share-track:focus-visible{outline:2px solid #ffd879;outline-offset:3px}.share-status{font-size:11px;color:#d8edb6}.liked-actions{flex-wrap:wrap}.hero h1,.hero h1 .hero-line{letter-spacing:.04em!important}@media(max-width:800px){.hero h1 .title-star{right:-.3em!important;top:-85%!important}.hero h1,.hero h1 .hero-line{letter-spacing:.025em!important}}@media(max-width:600px){.hero h1{font-size:clamp(20px,6.1vw,33px)!important}.hero-actions{flex-wrap:wrap}.liked-actions{justify-content:flex-end}}
 
 .vk-radio{padding-top:70px;padding-bottom:70px;border-top:1px solid #c8e2ce30}.vk-radio h2{font-size:clamp(28px,3vw,42px);margin:12px 0}.vk-radio p{color:#b4c8be}.vk-radio-mount{margin-top:22px;max-width:620px}.vk-radio-mount iframe{border:0;width:100%;height:420px;border-radius:14px;background:#102b32}.vk-radio-mount[hidden]{display:none}
+
+.cover-view{position:absolute;inset:0;border:0;background:transparent;cursor:zoom-in;z-index:1}.cover-play{z-index:2}.cover-dialog{max-width:min(94vw,1400px);max-height:94vh;padding:0;border:0;background:transparent;overflow:visible}.cover-dialog::backdrop{background:rgba(0,0,0,.88)}.cover-dialog img{display:block;max-width:100%;max-height:88vh;object-fit:contain}.cover-close{position:absolute;right:0;top:-42px;background:#102b32;color:white;border:1px solid #b9d9cd;border-radius:50%;width:38px;height:38px;font-size:26px;cursor:pointer}@media(max-width:600px){.player{transition:transform .4s ease,opacity .4s ease}.player.player-hidden{transform:translateY(110%);opacity:0;pointer-events:none}}
+
+.sound-object.sphere-floating{position:fixed!important;z-index:80!important;top:12px!important;right:12px!important;left:auto!important;bottom:auto!important;margin:0!important;width:clamp(130px,18vw,210px)!important;height:clamp(130px,18vw,210px)!important;transform:none!important;transition:width .45s ease,height .45s ease,top .45s ease,right .45s ease}.sound-object.sphere-floating .object-caption,.sound-object.sphere-floating .object-coordinate,.sound-object.sphere-floating .hero-skip{display:none!important}@media(max-width:600px){.sound-object.sphere-floating{width:125px!important;height:125px!important;top:8px!important;right:8px!important}}
+
+.hero h1{transform:scaleY(.75);transform-origin:left center}
+
+/* The floating player keeps its lettering and controls proportional to the smaller sphere. */
+.sound-object.sphere-floating .core-monogram{font-size:24px!important;letter-spacing:-.1em!important;padding-right:.1em!important}
+.sound-object.sphere-floating .core-caption{font-size:3px!important;letter-spacing:.6px!important;margin:2px 0 3px!important}
+.sound-object.sphere-floating .core-play{min-width:32px!important;height:13px!important;padding:0 3px!important;font-size:3px!important;gap:2px!important}
+.sound-object.sphere-floating .core-play svg{width:6px!important;height:6px!important}
+.sound-object.sphere-floating .sound-core:before{inset:3px!important}.sound-object.sphere-floating .sound-core:after{inset:-5px!important}
+/* Fade rays out after pause instead of leaving the last frame frozen. */
+#spectrum{opacity:0;transition:opacity 1.5s ease}
+.is-playing #spectrum{opacity:1}
+body:not(.is-playing) .sound-core{--star-energy:0}
+.sound-core{transition:background 1.5s ease,box-shadow 1.5s ease,filter 1.5s ease!important}
+@media(prefers-reduced-motion:reduce){#spectrum{transition:none}.sound-core{transition:none!important}}

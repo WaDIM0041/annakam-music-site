@@ -9,7 +9,7 @@
  let preference=true;
  try{preference=localStorage.getItem('annakam-effects')!=='off';}catch{}
  let enabled=false,frame=0,lastFrame=0,clock=0,lastClock=0,pointer={x:0,y:0},target={x:0,y:0};
- let ctxAudio,source,analyser,bins,audio;
+ let ctxAudio,source,analyser,bins,audio,audioIsPlaying=false,visualizerVisible=true;
  let frameCounter=0,glProgram,gl,texture,uniforms,textureReady=false;
  const landscape=document.getElementById('landscape'),dust=document.getElementById('dust'),spectrum=document.getElementById('spectrum');
  const dustCtx=dust.getContext('2d'), spectrumCtx=spectrum.getContext('2d');
@@ -175,16 +175,17 @@
   }
  }
  function tick(now){
-  frame=0;if(!enabled||document.hidden)return;
+  frame=0;if(!enabled||document.hidden||!audioIsPlaying||!visualizerVisible||!analyser)return;
   const interval=1000/(coarse.matches||lowPower?24:30);
   if(now-lastFrame>=interval){const delta=lastClock?Math.min((now-lastClock)/1000,.1):0;clock+=delta;lastClock=now;lastFrame=now;frameCounter++;
    pointer.x+=(target.x-pointer.x)*.06;pointer.y+=(target.y-pointer.y)*.06;
    root.style.setProperty('--px',pointer.x.toFixed(3));root.style.setProperty('--py',pointer.y.toFixed(3));
    drawSpectrum();drawGL();drawDust();
   }
-  frame=requestAnimationFrame(tick);
+  if(enabled&&!document.hidden&&audioIsPlaying&&visualizerVisible&&analyser)frame=requestAnimationFrame(tick);
  }
- function schedule(){cancelAnimationFrame(frame);lastClock=0;if(enabled&&!document.hidden)frame=requestAnimationFrame(tick);else{drawSpectrum();drawGL();drawDust();}}
+ function schedule(){cancelAnimationFrame(frame);frame=0;lastClock=0;if(enabled&&!document.hidden&&audioIsPlaying&&visualizerVisible&&analyser)frame=requestAnimationFrame(tick);else{drawSpectrum();drawGL();drawDust();}}
+ function setAudioPlaying(value){audioIsPlaying=Boolean(value);schedule();}
  function update(){
   enabled=preference&&!reduce.matches;
   body.classList.toggle('motion-on',enabled);body.classList.toggle('motion-off',!enabled);
@@ -208,6 +209,7 @@
  },{passive:true});
  document.addEventListener('pointerout',e=>{const magnetic=e.target.closest('.magnetic'),card=e.target.closest('.track');if(magnetic&&!magnetic.contains(e.relatedTarget))magnetic.style.removeProperty('transform');if(card&&!card.contains(e.relatedTarget))card.style.removeProperty('transform');});
  const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('waiting');observer.unobserve(e.target);}});},{threshold:.08}):null;
+ const visualizerObserver='IntersectionObserver'in window?new IntersectionObserver(entries=>{for(const entry of entries){visualizerVisible=entry.isIntersecting;schedule();}},{threshold:.05}):null;if(visualizerObserver)visualizerObserver.observe(spectrum);
  function observe(){
   if(lightLayout.matches||!observer)return;
   document.querySelectorAll('.reveal:not([data-observed])').forEach(n=>{
@@ -219,14 +221,21 @@
  window.AnnaAtmosphere={
   connectAudio(element){
    audio=element;
+   // Return synchronously on phones so audio.play() runs inside the original user gesture.
+   if(lightLayout.matches&&!source)return{mode:'native'};
+   if(!enabled&&!source)return{mode:'native'};
    try{
-    if(!ctxAudio){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;ctxAudio=new Audio();source=ctxAudio.createMediaElementSource(audio);analyser=ctxAudio.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.55;bins=new Uint8Array(analyser.frequencyBinCount);source.connect(analyser);analyser.connect(ctxAudio.destination);}
-    if(ctxAudio.state==='suspended')ctxAudio.resume().catch(()=>{});
-   }catch{if(source&&ctxAudio){try{source.disconnect();source.connect(ctxAudio.destination);}catch{}}analyser=null;}
+    const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return{mode:'native'};
+    if(!ctxAudio){ctxAudio=new Audio();ctxAudio.addEventListener('statechange',()=>{window.dispatchEvent(new CustomEvent('anna-audio-context-state',{detail:{state:ctxAudio.state}}));schedule();});source=ctxAudio.createMediaElementSource(audio);analyser=ctxAudio.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.55;bins=new Uint8Array(analyser.frequencyBinCount);source.connect(analyser);analyser.connect(ctxAudio.destination);}
+    if(ctxAudio.state==='suspended'||ctxAudio.state==='interrupted')return ctxAudio.resume().then(()=>ctxAudio.state==='running'?{mode:'webaudio',state:ctxAudio.state}:{mode:'blocked',state:ctxAudio.state},()=>({mode:'blocked',state:ctxAudio.state}));
+    if(ctxAudio.state!=='running')return{mode:'blocked',state:ctxAudio.state};
+    return{mode:'webaudio',state:ctxAudio.state};
+   }catch{return{mode:source?'blocked':'native',state:ctxAudio?.state};}
   },
+  setAudioPlaying,
   observe,
-  getDiagnostics(){return{effects:enabled,reduced:reduce.matches,webgl:Boolean(gl&&textureReady),audioAnalyser:Boolean(analyser),audioContext:ctxAudio?.state,frameCounter,energy};}
+  getDiagnostics(){return{effects:enabled,reduced:reduce.matches,webgl:Boolean(gl&&textureReady),audioAnalyser:Boolean(analyser),audioContext:ctxAudio?.state,audioRoute:source?'webaudio':'native',audioIsPlaying,visualizerVisible,frameCounter,energy};}
  };
  initGL();resize();update();observe();
- addEventListener('pagehide',()=>{cancelAnimationFrame(frame);});addEventListener('pageshow',()=>{resize();schedule();});
+ addEventListener('pagehide',()=>{cancelAnimationFrame(frame);frame=0;});addEventListener('pageshow',()=>{resize();if(!document.hidden&&audio&&!audio.paused&&ctxAudio&&['suspended','interrupted'].includes(ctxAudio.state))ctxAudio.resume().catch(()=>{});schedule();});
 })();
