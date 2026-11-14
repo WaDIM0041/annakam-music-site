@@ -91,6 +91,7 @@
  }
  let haloEnergy=0;
  const rayLevels=new Float32Array(36);
+ let bassAverage=0,beatPulse=0;
  function drawSpectrum(){
   if(!spectrumCtx||!sphereSize)return;
   const c=spectrumCtx,extent=sphereSize,s=extent/1.4,cx=extent/2;
@@ -102,6 +103,10 @@
   const count=active?Math.min(24,bins.length):0;
   for(let i=0;i<count;i++)sum+=(bins[i]/255)**2;
   energy=count?Math.sqrt(sum/count):0;
+  const bass=active?(bins[1]+bins[2]+bins[3]+bins[4])/(4*255):0;
+  bassAverage=active?bassAverage+(bass-bassAverage)*.075:0;
+  const beat=active?Math.min(1,Math.max(0,bass-bassAverage)*5):0;
+  beatPulse=active?Math.max(beat,beatPulse*.83):0;
   const target=playing?Math.max(.78,.78+energy*.22):0;
   haloEnergy=enabled?haloEnergy+(target-haloEnergy)*(target>haloEnergy?.18:.12):0;
   const radius=s*(.42+haloEnergy*.13);
@@ -119,18 +124,18 @@
   // Use a softer corona over the halo, with more headroom than the old bars.
   for(let i=0;i<rayLevels.length;i++){
    const step=i/(rayLevels.length-1);
-   const raw=active?bins[Math.min(bins.length-1,Math.round(1+step**1.65*47))]/255:0;
+   const raw=active?bins[Math.min(bins.length-1,Math.round(1+step**1.65*32))]/255:0;
    const level=enabled?rayLevels[i]+(raw-rayLevels[i])*(raw>rayLevels[i]?.58:.23):0;
    rayLevels[i]=level;
    if(level<.035)continue;
    const angle=i/rayLevels.length*Math.PI*2+clock*.13;
    const dx=Math.cos(angle),dy=Math.sin(angle),start=s*.252;
-   const intensity=level**1.5;
-   const end=s*(.339+.295*intensity);
+   const intensity=level**.85;
+   const end=s*(.35+.24*intensity+.065*beatPulse);
    const tint=204-164*intensity;
    const halfLength=(end-start)/2;
    const halfWidth=s*(.009+.017*intensity);
-   const opacity=.18+.38*intensity;
+   const opacity=.32+.52*intensity+.12*beatPulse;
    const color=(alpha)=>`hsla(${tint},100%,76%,${alpha})`;
    c.save();
    c.translate(cx+dx*(start+halfLength),cy+dy*(start+halfLength));
@@ -139,8 +144,8 @@
    // Fade both across the beam and toward its tips, leaving no hard outline.
    const ray=c.createRadialGradient(0,0,0,0,0,1);
    ray.addColorStop(0,color(opacity));
-   ray.addColorStop(.35,color(opacity*.63));
-   ray.addColorStop(.7,color(opacity*.15));
+   ray.addColorStop(.25,color(opacity*.9));
+   ray.addColorStop(.67,color(opacity*.42));
    ray.addColorStop(1,color(0));
    c.fillStyle=ray;c.fillRect(-1,-1,2,2);
    c.restore();
