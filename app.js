@@ -1,5 +1,20 @@
 'use strict';
 (() => {
+ const headline=document.getElementById('headline');
+ headline.setAttribute('aria-label','на своей волне');
+ let letterIndex=0;
+ for(const part of [headline,headline.querySelector('.hero-line')]){
+  for(const node of [...part.childNodes]){
+   if(node.nodeType!==Node.TEXT_NODE)continue;
+   const fragment=document.createDocumentFragment();
+   for(const letter of node.textContent){
+    if(/\s/.test(letter)){fragment.append(document.createTextNode(letter));continue;}
+    const span=document.createElement('span');span.className='headline-letter';span.textContent=letter;
+    span.setAttribute('aria-hidden','true');span.style.animationDelay=(letterIndex++*.12)+'s';fragment.append(span);
+   }
+   node.replaceWith(fragment);
+  }
+ }
  const tracks=[
   {"id":"winter-evening-vocal-trance","title":"Зимний вечер (Vocal Trance)","file":"audio/winter-evening-vocal-trance.mp3","cover":"winter-evening-vocal-trance","word":"Зимний вечер.","tag":"VOCAL TRANCE · ELECTRONIC","description":"Вокальный транс с зимним настроением и мелодичным электронным звучанием.","duration":387.21},
   {"id":"this-quiet-hour-deep-slap-house-mix","title":"This Quiet Hour (Deep Slap House Mix)","file":"audio/this-quiet-hour-deep-slap-house-mix.mp3","cover":"this-quiet-hour-deep-slap-house-mix","word":"Quiet hour.","tag":"DEEP SLAP HOUSE · VOCAL","description":"Новая глубокая slap house-версия тихого часа: упругий бас, ночной ритм и вокальная атмосфера.","duration":266.48},

@@ -40,3 +40,9 @@
 /* Расположение звезды в свободном пространстве над заголовком. */
 @media(min-width:801px){.hero h1 .title-star{right:-2.1em!important;top:-65%!important}}
 @media(max-width:800px){.hero h1 .title-star{right:.05em!important;top:-35%!important}}
+
+/* Буквы перелистываются между заливкой и прозрачным контуром. */
+.headline-letter{display:inline-block;transform-origin:center;backface-visibility:hidden}
+.motion-on .headline-letter{animation:headline-flip 14s ease-in-out infinite}
+@keyframes headline-flip{0%,32%,80%,100%{transform:rotateY(0);-webkit-text-fill-color:currentColor;-webkit-text-stroke:1px transparent}36%{transform:rotateY(90deg);-webkit-text-fill-color:currentColor;-webkit-text-stroke:1px transparent}40%,72%{transform:rotateY(0);-webkit-text-fill-color:transparent;-webkit-text-stroke:1.5px currentColor}76%{transform:rotateY(90deg);-webkit-text-fill-color:transparent;-webkit-text-stroke:1.5px currentColor}}
+@media(prefers-reduced-motion:reduce){.headline-letter{animation:none!important}}
