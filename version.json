@@ -1,11 +1,11 @@
 {
-  "release": "annakam-v064-20261114",
+  "release": "annakam-v065-20261114",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "433238da7e3500c40e652c243eba6dcc2f3f3eb056a1b3d873763fcb4adf29a1",
+    "index.html": "9eeb54a15ceb17faf6393a3af3828159c1115000526dd388dc0e18f5158f6e7c",
     "style.css": "18a3a82f38fcb81715e399cbead0df68c45b067b4caffeeefb5674e1fce517dc",
-    "fixes.css": "4bd68ccf378bade4a7f1eff929bbf8db34f01c4c6f5006b8b63394ea5ad98625",
+    "fixes.css": "6e2c04ed7b7c6ef38fbfc4ac7db351a5ccdd828acf34d7ef8ac237ac5f23a718",
     "app.js": "acd3a53eabb83226bf55537c579a42de246b0ba0833d40a8d0f360bcfd85ea3f",
     "atmosphere.js": "59d3ed3c8e63f635cc2fb273d34b89659aaaac4503a7315eb271a13eadd7f24a",
     "liked-tracks.json": "464542df3bc790f5f7dde0a8087495f9c68c3daf722c0bfa99f631e9d30d490d",
@@ -37,6 +37,7 @@
     "assets/holograms/saxophone.png": "1d5adac033a8b643ae17aa2ceba732bde969530c0cff117c31b18098cc5d7664",
     "assets/holograms/violin.png": "c80f7f96f100cac3eb96fcc25c3fc1c1d527ae7ff6939ea9b018da3b704d365d",
     "assets/covers/servants-of-earth.png": "9c8931e7973ef16e02b92650bef24302af380302759418627635c4af3ba520db",
+    "assets/covers/servants-of-earth-wide-v2.png": "f1754ab7b43177bb31713ca2787b256c5963a9494c8e7d1674a6e1b0d96042e3",
     "assets/covers/winter-evening-vocal-trance.png": "96634c0885c3097bb6a4feb3979fe9a0c757125d0808e5d7beed42faea44026e",
     "assets/covers/winter-evening-wide-v2.png": "9038b30ce0da3a16acf39c2b742caaaf218848aefeb231d43815b204ba6906ca",
     "assets/covers/winter-evening-river-v3.png": "24867a44e6347926fcfd18107165e221099501a21ef73a71e058875fa5a3114c",
