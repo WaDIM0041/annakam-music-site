@@ -1,12 +1,12 @@
 {
-  "release": "annakam-v065-20261114",
+  "release": "annakam-v066-20261114",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
-    "index.html": "9eeb54a15ceb17faf6393a3af3828159c1115000526dd388dc0e18f5158f6e7c",
+    "index.html": "0896f44b4d14739a9bc3b43fc0c8e34eb18754a5da9a530ef4505e4e6ad75aba",
     "style.css": "18a3a82f38fcb81715e399cbead0df68c45b067b4caffeeefb5674e1fce517dc",
-    "fixes.css": "6e2c04ed7b7c6ef38fbfc4ac7db351a5ccdd828acf34d7ef8ac237ac5f23a718",
-    "app.js": "acd3a53eabb83226bf55537c579a42de246b0ba0833d40a8d0f360bcfd85ea3f",
+    "fixes.css": "54dfc03e1c5478e3ff8acb948f373798a9507795d12486900982c1091b16134e",
+    "app.js": "e9862bb65a5c3356177b008829bd1fa13e5d98f4ac3df854fdcb48b37ce3b90c",
     "atmosphere.js": "59d3ed3c8e63f635cc2fb273d34b89659aaaac4503a7315eb271a13eadd7f24a",
     "liked-tracks.json": "464542df3bc790f5f7dde0a8087495f9c68c3daf722c0bfa99f631e9d30d490d",
     "instrument-cues.json": "e3fd7d95ec309eebafae5666d578c95f47ed81e639f228e8847e9ccf32365a28",

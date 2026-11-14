@@ -36,6 +36,28 @@
  const cards=new Map();
  function message(text,retry=false){$('status-text').textContent=text;$('status').hidden=!text;$('retry').hidden=!retry;}
  function setBuffer(value){buffering=value;document.querySelector('.player').classList.toggle('is-buffering',value);toggle.setAttribute('aria-busy',String(value));}
+ function shareUrl(trackId){
+  const url=new URL(location.pathname,location.origin);
+  if(trackId)url.searchParams.set('track',trackId);
+  return url.href;
+ }
+ async function share(title,url){
+  if(navigator.share){try{await navigator.share({title,url});return;}catch(error){if(error.name==='AbortError')return;}}
+  try{await navigator.clipboard.writeText(url);announceShare('Ссылка скопирована');}
+  catch{window.prompt('Скопируйте ссылку',url);}
+ }
+ function announceShare(text){const note=$('share-status');note.textContent=text;clearTimeout(announceShare.timer);announceShare.timer=setTimeout(()=>{note.textContent='';},3000);}
+ $('share-site').addEventListener('click',()=>share('AnnaKam Music Studio',shareUrl()));
+ const radioMount=$('vk-radio-mount'),radioButton=$('vk-radio-toggle');
+ function closeVkRadio(){radioMount.replaceChildren();radioMount.hidden=true;radioButton.setAttribute('aria-expanded','false');radioButton.textContent='Открыть радио VK';$('vk-radio-status').textContent='';}
+ radioButton.addEventListener('click',()=>{
+  if(!radioMount.hidden){closeVkRadio();return;}
+  stopLikedPlayer();pauseLocalForSuno();
+  radioMount.hidden=false;radioButton.setAttribute('aria-expanded','true');radioButton.textContent='Закрыть радио VK';
+  const frame=document.createElement('iframe');frame.title='Радио AnnaKam ВКонтакте';frame.loading='lazy';frame.allow='autoplay; encrypted-media';
+  frame.srcdoc='<!doctype html><html lang="ru"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:transparent}</style></head><body><div id="vk_playlist_6028933_4"></div><script src="https://vk.ru/js/api/openapi.js"><\/script><script>try{VK.Widgets.Playlist("vk_playlist_6028933_4",6028933,4,"",{})}catch(e){document.body.textContent="Не удалось открыть радио VK"}<\/script></body></html>';
+  radioMount.append(frame);
+ });
  function render(){
   list.replaceChildren();$('queue-tracks').replaceChildren();
   tracks.forEach((t,i)=>{
@@ -49,7 +71,7 @@
    tag.className='eyebrow';tag.textContent=t.tag;title.textContent=t.title;description.className='track-description';description.textContent=t.description;artist.className='track-artist';artist.textContent='AnnaKam';
    const eq=document.createElement('span');eq.className='track-equalizer';eq.setAttribute('aria-hidden','true');eq.innerHTML='<i></i><i></i><i></i>';eq.hidden=true;artist.append(eq);names.append(tag,title,description,artist);
    const tail=document.createElement('div');tail.className='track-tail';const duration=document.createElement('span');duration.className='track-duration';duration.textContent=format(t.duration)+' / MP3';
-   const download=document.createElement('a');download.className='download';download.href=t.file;download.download=t.title+'.mp3';download.setAttribute('aria-label','Скачать '+t.title+' в MP3');download.title='Скачать MP3';download.innerHTML=icon('down');tail.append(duration,download);
+   const download=document.createElement('a');download.className='download';download.href=t.file;download.download=t.title+'.mp3';download.setAttribute('aria-label','Скачать '+t.title+' в MP3');download.title='Скачать MP3';download.innerHTML=icon('down');const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='share-track';shareButton.textContent='Поделиться';shareButton.setAttribute('aria-label','Поделиться: '+t.title);shareButton.addEventListener('click',()=>share(t.title,shareUrl(t.id)));tail.append(duration,download,shareButton);
    info.append(names,tail);card.append(cover,info);list.append(card);cards.set(t.id,{card,play,eq});
    const q=document.createElement('button');q.className='queue-track';q.dataset.play=t.id;q.innerHTML='<span>'+String(i+1).padStart(2,'0')+'</span><span></span>'+icon('play');q.children[1].textContent=t.title;$('queue-tracks').append(q);
   });
@@ -94,7 +116,7 @@
  }
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
-  stopLikedPlayer();
+  stopLikedPlayer();closeVkRadio();
   const id=++requestId;failed=false;sunoActive=false;message('');setBuffer(true);
   if(current!==index){current=index;audio.src=tracks[index].file;updateTime();updateMedia();}
   window.AnnaAtmosphere?.connectAudio(audio);
@@ -139,7 +161,7 @@
    target.replaceChildren();
    for(const item of items){
     if(!/^[0-9a-f-]{36}$/i.test(item.id)||!item.embedUrl?.startsWith('https://suno.com/embed/'))continue;
-    const card=document.createElement('article');card.className='liked-card reveal';
+    const card=document.createElement('article');card.className='liked-card reveal';card.id='liked-track-'+item.id;
     const head=document.createElement('div');head.className='liked-track-head';
     const preview=document.createElement('img');
     preview.className='liked-cover';
@@ -151,7 +173,7 @@
     tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
     const actions=document.createElement('div');actions.className='liked-actions';
     const listen=document.createElement('button');listen.className='liked-play';listen.type='button';listen.textContent='Слушать в Suno';listen.setAttribute('aria-pressed','false');listen.setAttribute('aria-label','Открыть плеер: '+item.title);
-    const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',pauseLocalForSuno);actions.append(listen,link);head.append(info,actions);
+    const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',pauseLocalForSuno);const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='share-track liked-share';shareButton.textContent='Поделиться';shareButton.setAttribute('aria-label','Поделиться: '+item.title);shareButton.addEventListener('click',()=>share(item.title,shareUrl('liked-'+item.id)));actions.append(listen,link,shareButton);head.append(info,actions);
     const mount=document.createElement('div');mount.className='liked-player';
     listen.addEventListener('click',()=>{
      if(activeLikedPlayer?.id===item.id){stopLikedPlayer();return;}
@@ -162,6 +184,8 @@
     const source=document.createElement('p');source.className='liked-source';source.textContent='Источник: Suno. Воспроизведение и доступность контролирует Suno.';
     head.prepend(preview);card.append(head,mount,source);target.append(card);
    }
+   const likedId=new URL(location.href).searchParams.get('track');
+   if(likedId&&likedId.startsWith('liked-'))document.getElementById('liked-track-'+likedId.slice(6))?.scrollIntoView({block:'center'});
    window.AnnaAtmosphere?.observe();
   }catch(error){$('liked-note').textContent='Не удалось загрузить избранное. Обновите страницу или откройте треки в Suno.';}
  }
@@ -170,5 +194,9 @@
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!queue.hidden){showQueue(false);$('queue').focus();}});
  document.addEventListener('click',e=>{if(!queue.hidden&&!queue.contains(e.target)&&!$('queue').contains(e.target))showQueue(false);});
  if('mediaSession'in navigator){const actions={play:()=>playTrack(current),pause:()=>audio.pause(),previoustrack:()=>playTrack((current-1+tracks.length)%tracks.length),nexttrack:()=>playTrack((current+1)%tracks.length),seekto:d=>{if(Number.isFinite(audio.duration))audio.currentTime=d.seekTime;}};Object.entries(actions).forEach(([key,handler])=>{try{navigator.mediaSession.setActionHandler(key,handler);}catch{}});}
- render();renderLiked();update();updateTime();updateMedia();document.body.classList.add('enhanced');
+ render();
+ const sharedTrack=new URL(location.href).searchParams.get('track');
+ const sharedIndex=tracks.findIndex(track=>track.id===sharedTrack);
+ if(sharedIndex>=0){current=sharedIndex;audio.src=tracks[current].file;cards.get(tracks[current].id).card.scrollIntoView({block:'center'});}
+ renderLiked();update();updateTime();updateMedia();document.body.classList.add('enhanced');
 })();
