@@ -144,8 +144,8 @@
    // Fade both across the beam and toward its tips, leaving no hard outline.
    const ray=c.createRadialGradient(0,0,0,0,0,1);
    ray.addColorStop(0,color(opacity));
-   ray.addColorStop(.25,color(opacity*.9));
-   ray.addColorStop(.67,color(opacity*.42));
+   ray.addColorStop(.18,color(opacity*.72));
+   ray.addColorStop(.52,color(opacity*.18));
    ray.addColorStop(1,color(0));
    c.fillStyle=ray;c.fillRect(-1,-1,2,2);
    c.restore();
