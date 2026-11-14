@@ -54,3 +54,8 @@
 
 /* Более широкий и низкий рисунок букв заголовка. */
 .hero h1 .headline-letter{font-stretch:expanded;scale:1.05 .88}
+
+/* Пространство между буквами подчёркивает движение волны. */
+.hero h1,.hero h1 .hero-line{letter-spacing:.015em!important}
+.hero h1 .headline-letter{scale:1 .88}
+@media(max-width:600px){.hero h1{font-size:clamp(22px,6.4vw,35px)!important}.hero h1,.hero h1 .hero-line{letter-spacing:.01em!important}}
