@@ -1,5 +1,5 @@
 {
-  "release": "annakam-v068-20261114",
+  "release": "annakam-seo-20261116",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
@@ -8,7 +8,7 @@
     "assets/video/winter-evening-1080-web.mp4": "9a99524dc731ae9846e716223fe81df0c68c987edcd9a00a9a34f8d2fb441c66",
     "assets/video/winter-evening-720.mp4": "4c51bd1c7f07afe23e16d0ed384eb05cd894732c92d7c86991c01a98f5833fee",
     "assets/video/winter-evening-poster.jpg": "2faa021e816364b5b281292f21c1d91f590df0b2a2ca0c4529c26790775af8eb",
-    "index.html": "b7625532afee39a7374f1188897d502b1bba885675a3b9ce49a157490b46f20d",
+    "index.html": "d58a8b3ba2a7f3f2ae3d121d9142f6ee4be7f9995a9d9073ec3c1935af5afaa8",
     "style.css": "d986014e1d48ce84c83083abb8a96fe0e899a31d9d49ff0102641b09b4134c19",
     "fixes.css": "9b87b9bf1bf365d694be58be01cac9d423bb8849082b92cb79fca4d632fddad8",
     "app.js": "88744deeda3f7724579a483087a4f5d8a5d926eba6290afd03e20027570999bc",
