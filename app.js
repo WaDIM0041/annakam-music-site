@@ -16,6 +16,7 @@
   }
  }
  const tracks=[
+  {id:'20-quiet-gratitude',title:'20 - Тихая благодарность медляк',file:'audio/20-quiet-gratitude.mp3',cover:'20-quiet-gratitude',trackNumber:20,word:'',tag:'ANNAKAM · TRACK 20',description:'Тихая мелодия благодарности для спокойного вечера и неспешного танца.',duration:219.17},
   {"id":"winter-evening-vocal-trance","title":"Зимний вечер (Vocal Trance)","file":"audio/winter-evening-vocal-trance.mp3","cover":"winter-evening-vocal-trance","word":"Зимний вечер.","tag":"VOCAL TRANCE · ELECTRONIC","description":"Вокальный транс с зимним настроением и мелодичным электронным звучанием.","duration":387.21},
   {"id":"servants-of-earth","title":"Слуги Земли","file":"audio/servants-of-earth.mp3","cover":"servants-of-earth","word":"Слуги Земли","tag":"ANNAKAM · ORIGINAL SOUND","description":"Композиция из проекта «Опера Вселенной», посвящённая Земле и природе.","duration":356.37},
   {"id":"this-quiet-hour-deep-slap-house-mix","title":"This Quiet Hour (Deep Slap House Mix)","file":"audio/this-quiet-hour-deep-slap-house-mix.mp3","cover":"this-quiet-hour-deep-slap-house-mix","word":"Quiet hour.","tag":"DEEP SLAP HOUSE · VOCAL","description":"Новая глубокая slap house-версия тихого часа: упругий бас, ночной ритм и вокальная атмосфера.","duration":266.48},
@@ -30,6 +31,7 @@
   {id:'chrono',title:'Chrono Loop Anomaly',file:'audio/chrono.mp3',cover:'chrono',word:'Chrono.',tag:'MINIMAL ELECTRONIC · SOUND EXPLORATIONS',description:'Короткая звуковая аномалия: петля времени, ритм и цифровое эхо.',duration:123.04}
  ];
  const coverImages={
+  '20-quiet-gratitude':'assets/covers/20-quiet-gratitude.webp',
   'winter-evening-vocal-trance':'assets/covers/winter-evening-river-v3.webp','servants-of-earth':'assets/covers/servants-of-earth-wide-v2.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/quiet-hour-wide.webp','measured-groove':'assets/covers/measured-groove-anna-v2.webp','silent-house-trance':'assets/covers/silent-house-trance.jpg','wake-thanks-violin':'assets/covers/wake-thanks-city-v2.webp','wake-thanks-ru-1':'assets/covers/wake-thanks-pencil-wide.webp','own-wave-trance-v9':'assets/covers/own-wave-trance-v10.webp','quiet-hour':'assets/covers/quiet-hour-v2.webp',pulse:'assets/aurora-coast-mobile.webp',chrono:'assets/landscape-kamchatka-stars-v3.webp'
  };
  const sessionArtwork={ 'winter-evening-vocal-trance':'assets/covers/media-session/winter-evening-vocal-trance.webp','servants-of-earth':'assets/covers/media-session/servants-of-earth.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/media-session/this-quiet-hour-deep-slap-house-mix.webp','measured-groove':'assets/covers/media-session/measured-groove.webp','silent-house-trance':'assets/covers/media-session/silent-house-trance.webp','wake-thanks-violin':'assets/covers/media-session/wake-thanks-violin.webp','wake-thanks-ru-1':'assets/covers/media-session/wake-thanks-ru-1.webp','own-wave-trance-v9':'assets/covers/media-session/own-wave-trance-v9.webp','quiet-hour':'assets/covers/media-session/quiet-hour.webp',pulse:'assets/covers/media-session/explorations.webp',chrono:'assets/covers/media-session/explorations.webp' };
@@ -73,7 +75,7 @@
   tracks.forEach((t,i)=>{
    const card=document.createElement('article');card.className='track reveal';card.dataset.id=t.id;
    const cover=document.createElement('div');cover.className='cover '+t.cover;
-   cover.innerHTML='<span class="cover-number" aria-hidden="true">'+String(i+1).padStart(2,'0')+'</span><span class="cover-note" aria-hidden="true">ANNAKAM / ORIGINAL SOUND</span>'+(i===1?'<span class="cover-orbit" aria-hidden="true"></span>':'');
+   cover.innerHTML='<span class="cover-number" aria-hidden="true">'+String(t.trackNumber||i+1).padStart(2,'0')+'</span><span class="cover-note" aria-hidden="true">ANNAKAM / ORIGINAL SOUND</span>'+(i===1?'<span class="cover-orbit" aria-hidden="true"></span>':'');
    const artwork=document.createElement('img');artwork.className='cover-art';artwork.alt='';artwork.setAttribute('aria-hidden','true');artwork.width=1200;artwork.height=686;artwork.loading='lazy';artwork.decoding='async';artwork.fetchPriority='low';artwork.src=coverImages[t.id]||'assets/aurora-coast-mobile.webp';cover.prepend(artwork);const view=document.createElement('button');view.type='button';view.className='cover-view';view.setAttribute('aria-label','Открыть обложку: '+t.title);view.addEventListener('click',()=>openCover(artwork.src,t.title));cover.append(view);
    const word=document.createElement('span');word.className='cover-word';word.textContent=t.word;word.setAttribute('aria-hidden','true');cover.append(word);
    const play=document.createElement('button');play.className='cover-play';play.dataset.play=t.id;cover.append(play);

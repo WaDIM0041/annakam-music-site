@@ -67,7 +67,7 @@
    dust.width=size.w;
    dust.height=size.h;
   }
-  const box=spectrum.getBoundingClientRect();sphereSize=box.width;const dpr=Math.min(devicePixelRatio||1,1.5);spectrum.width=Math.round(box.width*dpr);spectrum.height=Math.round(box.height*dpr);
+  const width=spectrum.clientWidth,height=spectrum.clientHeight;sphereSize=width;const dpr=Math.min(devicePixelRatio||1,1.5);spectrum.width=Math.round(width*dpr);spectrum.height=Math.round(height*dpr);
   if(spectrumCtx)spectrumCtx.setTransform(dpr,0,0,dpr,0,0);
   const holoBox=hologram.getBoundingClientRect();holoSize=holoBox.width;hologram.width=Math.round(holoSize*dpr);hologram.height=Math.round(holoSize*dpr);if(holoCtx)holoCtx.setTransform(dpr,0,0,dpr,0,0);
   stars=Array.from({length:coarse.matches||lowPower?18:40},(_,i)=>({x:((i*73.83)%100)/100,y:((i*31.37)%100)/100,r:.5+(i%3)*.35,s:.04+(i%7)*.012}));
@@ -124,7 +124,8 @@
   // Use a softer corona over the halo, with more headroom than the old bars.
   for(let i=0;i<rayLevels.length;i++){
    const step=i/(rayLevels.length-1);
-   const raw=active?bins[Math.min(bins.length-1,Math.round(1+step**1.65*32))]/255:0;
+   const signal=active?bins[Math.min(bins.length-1,Math.round(1+step**1.65*32))]/255:0;
+   const raw=lightLayout.matches?Math.min(1,signal*1.35):signal;
    const level=enabled?rayLevels[i]+(raw-rayLevels[i])*(raw>rayLevels[i]?.58:.23):0;
    rayLevels[i]=level;
    if(level<.035)continue;
@@ -209,6 +210,7 @@
  },{passive:true});
  document.addEventListener('pointerout',e=>{const magnetic=e.target.closest('.magnetic'),card=e.target.closest('.track');if(magnetic&&!magnetic.contains(e.relatedTarget))magnetic.style.removeProperty('transform');if(card&&!card.contains(e.relatedTarget))card.style.removeProperty('transform');});
  const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('waiting');observer.unobserve(e.target);}});},{threshold:.08}):null;
+ if('ResizeObserver'in window){let previousSpectrumWidth=0,previousSpectrumHeight=0;new ResizeObserver(entries=>{const rect=entries[0].contentRect;if(rect.width===previousSpectrumWidth&&rect.height===previousSpectrumHeight)return;previousSpectrumWidth=rect.width;previousSpectrumHeight=rect.height;resize();}).observe(spectrum);}
  const visualizerObserver='IntersectionObserver'in window?new IntersectionObserver(entries=>{for(const entry of entries){visualizerVisible=entry.isIntersecting;schedule();}},{threshold:.05}):null;if(visualizerObserver)visualizerObserver.observe(spectrum);
  function observe(){
   if(lightLayout.matches||!observer)return;
