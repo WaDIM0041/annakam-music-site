@@ -221,8 +221,7 @@
  window.AnnaAtmosphere={
   connectAudio(element){
    audio=element;
-   // Return synchronously on phones so audio.play() runs inside the original user gesture.
-   if(lightLayout.matches&&!source)return{mode:'native'};
+
    if(!enabled&&!source)return{mode:'native'};
    try{
     const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return{mode:'native'};
