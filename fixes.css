@@ -142,3 +142,10 @@ body:not(.is-playing) .sound-core{--star-energy:0}
 
 /* Shared AnnaKam wordmark in the footer link. */
 .footer-identity .footer-wordmark{display:block;width:112px;height:26px;object-fit:contain;object-position:left center}
+
+/* Center the footer wordmark and its caption as a single unit. */
+.footer-identity>span{align-items:center;text-align:center}.footer-identity .footer-wordmark{object-position:center}.footer-identity small{text-align:center}
+
+/* Frosted glass control complements the AK player. */
+.sound-object .core-play-icon{background:linear-gradient(145deg,rgba(173,226,221,.30),rgba(25,64,76,.48));border-color:rgba(207,244,231,.7);color:#effdf4;box-shadow:inset 0 1px 8px rgba(240,255,251,.18),0 0 18px rgba(123,219,215,.22);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.sound-button:hover .core-play-icon{background:linear-gradient(145deg,rgba(195,242,234,.43),rgba(42,95,103,.58));box-shadow:inset 0 1px 10px rgba(240,255,251,.22),0 0 22px rgba(123,219,215,.34)}
