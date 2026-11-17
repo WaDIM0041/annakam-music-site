@@ -1,5 +1,5 @@
 {
-  "release": "annakam-track21-20261117",
+  "release": "annakam-track23-20261117",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
@@ -79,9 +79,11 @@
     "assets/covers/liked/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0.webp": "bf9572afd1d5c54713616feef1a6b416cb80578675041b754e72aa964c6501d7",
     "assets/covers/liked/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf.webp": "57682fd2833cd015b5c51a50a5a10e43225a9539fbc8ae45f1dd813e2336cfe0",
     "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.webp": "8bf46516eddd26578503b677f48155343108c2921a3ac7c23c8fa3af9b58113b",
-    "index.html": "c01f9ae057c32ec80a9d618bb07808547c83d50737b6e1a5d4f26c12e7355f22",
-    "app.js": "6d91dc7194b7717b8b256eb4fa48c81a4c8dffed5e71065d0102da9ec6e0374d",
     "audio/21-the-mark-remains.mp3": "1d51358fcc9d50b2cd9639cc317422535319388e6c2146342e694b70e3572429",
-    "assets/covers/21-the-mark-remains.webp": "636b302339cdd921a56a83e6b86747fed777e0f6de0dcbd372a00ac800892434"
+    "assets/covers/21-the-mark-remains.webp": "636b302339cdd921a56a83e6b86747fed777e0f6de0dcbd372a00ac800892434",
+    "index.html": "6792673cd8ee458ef668d98635e88d33eea5848b3498bbcaa76cc3c9083fb54d",
+    "app.js": "bab4f83d1337591e312253d8909a9755df31b4d8c77e4ec07070d3eee66ace59",
+    "audio/23-side-window-thank-you-universe.mp3": "a3394cd4eab19e3eea9bc6e435c6a972bab97d4a58207497627f6f1350ec1467",
+    "assets/covers/23-side-window.webp": "b45b0b0e251fdc23ac6f23c155649d4db68cd2a0efcdfc4f80ec5212d95c31e4"
   }
 }

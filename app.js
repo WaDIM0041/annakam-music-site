@@ -16,6 +16,7 @@
   }
  }
  const tracks=[
+  {id:'23-side-window',title:'23 - side Window 1 Thank You, Universe',file:'audio/23-side-window-thank-you-universe.mp3',cover:'23-side-window',trackNumber:23,word:'',tag:'ANNAKAM · TRACK 23',description:'Композиция из проекта «Опера Вселенной» — музыкальное размышление о благодарности.',duration:339.85},
   {id:'21-the-mark-remains',title:'21 - The Mark Remains My ideas',file:'audio/21-the-mark-remains.mp3',cover:'21-the-mark-remains',trackNumber:21,word:'',tag:'ANNAKAM · TRACK 21',description:'Музыкальная история о следе, который остаётся с нами.',duration:217.61},
   {id:'20-quiet-gratitude',title:'20 - Тихая благодарность медляк',file:'audio/20-quiet-gratitude.mp3',cover:'20-quiet-gratitude',trackNumber:20,word:'',tag:'ANNAKAM · TRACK 20',description:'Тихая мелодия благодарности для спокойного вечера и неспешного танца.',duration:219.17},
   {"id":"winter-evening-vocal-trance","title":"Зимний вечер (Vocal Trance)","file":"audio/winter-evening-vocal-trance.mp3","cover":"winter-evening-vocal-trance","word":"Зимний вечер.","tag":"VOCAL TRANCE · ELECTRONIC","description":"Вокальный транс с зимним настроением и мелодичным электронным звучанием.","duration":387.21},
@@ -32,6 +33,7 @@
   {id:'chrono',title:'Chrono Loop Anomaly',file:'audio/chrono.mp3',cover:'chrono',word:'Chrono.',tag:'MINIMAL ELECTRONIC · SOUND EXPLORATIONS',description:'Короткая звуковая аномалия: петля времени, ритм и цифровое эхо.',duration:123.04}
  ];
  const coverImages={
+  '23-side-window':'assets/covers/23-side-window.webp',
   '21-the-mark-remains':'assets/covers/21-the-mark-remains.webp',
   '20-quiet-gratitude':'assets/covers/20-quiet-gratitude.webp',
   'winter-evening-vocal-trance':'assets/covers/winter-evening-river-v3.webp','servants-of-earth':'assets/covers/servants-of-earth-wide-v2.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/quiet-hour-wide.webp','measured-groove':'assets/covers/measured-groove-anna-v2.webp','silent-house-trance':'assets/covers/silent-house-trance.jpg','wake-thanks-violin':'assets/covers/wake-thanks-city-v2.webp','wake-thanks-ru-1':'assets/covers/wake-thanks-pencil-wide.webp','own-wave-trance-v9':'assets/covers/own-wave-trance-v10.webp','quiet-hour':'assets/covers/quiet-hour-v2.webp',pulse:'assets/aurora-coast-mobile.webp',chrono:'assets/landscape-kamchatka-stars-v3.webp'
