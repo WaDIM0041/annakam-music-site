@@ -110,3 +110,15 @@ body:not(.is-playing) .sound-core{--star-energy:0}
 .sphere-placeholder{justify-self:center;aspect-ratio:1;pointer-events:none}.sound-object.sphere-floating{animation:none!important;overflow:visible!important}
 
 .sound-object.sphere-floating{position:fixed!important;z-index:80!important;top:12px!important;right:12px!important;left:auto!important;bottom:auto!important;margin:0!important;width:clamp(130px,18vw,210px)!important;height:clamp(130px,18vw,210px)!important;transform:none!important}@media(max-width:600px){.sound-object.sphere-floating{width:125px!important;height:125px!important;top:8px!important;right:8px!important}}
+
+/* Center the AK player controls and keep only the action icon when docked. */
+.sound-object .sound-core{display:flex;align-items:center;justify-content:center;gap:5px;text-align:center}
+.sound-object .core-monogram{padding:0!important;letter-spacing:-.10em!important;line-height:.9!important;transform:translateX(-.05em)}
+.sound-object .core-caption{margin:0!important;line-height:1!important}
+.sound-object .core-play{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px!important;width:auto!important;min-width:0!important;height:auto!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;font-size:6px!important;line-height:1!important;letter-spacing:.7px!important;color:#eaf1d9!important;animation:none!important}
+.sound-object .core-play-icon{display:grid;place-items:center;width:27px;height:27px;border:1px solid #ffe2a7;border-radius:50%;background:linear-gradient(135deg,#ffd879,#ed9342);color:#2a1608;box-shadow:0 0 18px #f5ab5977}
+.sound-object .core-play-icon svg{display:block;width:15px!important;height:15px!important;transform:none!important}
+.sound-object .core-play-label{display:block}
+.sound-object.sphere-floating .core-monogram,.sound-object.sphere-floating .core-caption,.sound-object.sphere-floating .core-play-label{display:none!important}
+.sound-object.sphere-floating .core-play-icon{width:30px;height:30px}
+.sound-object.sphere-floating .core-play-icon svg{width:17px!important;height:17px!important}

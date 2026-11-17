@@ -102,8 +102,9 @@
   $('now-title').textContent=t.title;$('now-label').textContent=playing?'СЕЙЧАС ИГРАЕТ':failed?'ОШИБКА ВОСПРОИЗВЕДЕНИЯ':pending?'ЗАГРУЗКА ТРЕКА':'ВЫБРАННЫЙ ТРЕК';
   $('player-cover').className='mini-cover '+t.cover;
   $('object-state').textContent=playing?'ВЫ НА СВОЕЙ ВОЛНЕ':pending?'ТРЕК ЗАГРУЖАЕТСЯ':'ВАША ВОЛНА ЖДЁТ';
-  document.querySelector('.sound-button').dataset.play=t.id;document.querySelector('.sound-button').setAttribute('aria-label',(playing?'Пауза: ':'Слушать: ')+t.title);
-  document.querySelector('.core-play-icon').innerHTML=icon(playing?'pause':'play');
+  document.querySelector('.sound-button').dataset.play=t.id;document.querySelector('.sound-button').setAttribute('aria-label',(playing||pending?'Пауза: ':'Слушать: ')+t.title);
+  document.querySelector('.core-play-icon').innerHTML=icon(playing||pending?'pause':'play');
+  document.querySelector('.core-play-label').textContent=playing||pending?'Пауза':'Слушать';
   for(const track of tracks){const c=cards.get(track.id),active=track===t;c.card.classList.toggle('active',active);c.play.innerHTML=icon(active&&(playing||pending)?'pause':'play');c.play.setAttribute('aria-label',(active&&(playing||pending)?'Пауза: ':'Слушать: ')+track.title);c.eq.hidden=!active;}
   document.querySelectorAll('.queue-track').forEach(q=>{q.classList.toggle('active',q.dataset.play===t.id);q.setAttribute('aria-label',(q.dataset.play===t.id&&(playing||pending)?'Пауза: ':'Слушать: ')+tracks.find(x=>x.id===q.dataset.play).title);});
   if('mediaSession'in navigator){navigator.mediaSession.playbackState=playing?'playing':playbackState==='ended'?'none':'paused';}
