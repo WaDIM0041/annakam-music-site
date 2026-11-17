@@ -139,3 +139,6 @@ body:not(.is-playing) .sound-core{--star-energy:0}
 
 /* Shared AnnaKam wordmark in the music studio identity. */
 .studio-brand .studio-wordmark,.signature .studio-wordmark{display:block;width:106px;height:25px;object-fit:contain;flex:none}.studio-brand{gap:5px}.signature .studio-wordmark{width:130px;height:31px}.signature{gap:8px}@media(max-width:600px){.studio-brand .studio-wordmark{width:84px;height:20px}.studio-brand{gap:4px}.signature .studio-wordmark{width:112px;height:27px}}
+
+/* Shared AnnaKam wordmark in the footer link. */
+.footer-identity .footer-wordmark{display:block;width:112px;height:26px;object-fit:contain;object-position:left center}
