@@ -105,3 +105,8 @@ body:not(.is-playing) .sound-core{--star-energy:0}
 .video-dialog:not(:fullscreen){height:fit-content;max-height:min(90dvh,760px)}.video-dialog-description{padding:12px 4px 5px;color:#c4d9cf}.video-dialog-description h3{margin:0 0 5px;color:#e7f1dc;font-size:17px;font-weight:600}.video-dialog-description p{margin:0;font-size:12px;line-height:1.55}.video-dialog:fullscreen .video-dialog-description{display:none}@media(max-width:600px){.video-dialog[open]:not(:fullscreen){display:block;width:min(430px,calc(100vw - 24px));height:fit-content;max-height:90dvh;padding:12px;border:1px solid #b8dbcf66;border-radius:16px;overflow:auto}.video-feature .video-dialog:not(:fullscreen) video{max-height:55dvh}}
 
 .video-feature{margin-bottom:clamp(28px,4vw,56px)}
+
+/* Keep the AK player anchored to the viewport during scrolling. */
+.sphere-placeholder{justify-self:center;aspect-ratio:1;pointer-events:none}.sound-object.sphere-floating{animation:none!important;overflow:visible!important}
+
+.sound-object.sphere-floating{position:fixed!important;z-index:80!important;top:12px!important;right:12px!important;left:auto!important;bottom:auto!important;margin:0!important;width:clamp(130px,18vw,210px)!important;height:clamp(130px,18vw,210px)!important;transform:none!important}@media(max-width:600px){.sound-object.sphere-floating{width:125px!important;height:125px!important;top:8px!important;right:8px!important}}

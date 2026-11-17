@@ -1,5 +1,5 @@
 {
-  "release": "annakam-track23-20261117",
+  "release": "annakam-ak-player-20261117",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
@@ -9,7 +9,7 @@
     "assets/video/winter-evening-720.mp4": "4c51bd1c7f07afe23e16d0ed384eb05cd894732c92d7c86991c01a98f5833fee",
     "assets/video/winter-evening-poster.jpg": "2faa021e816364b5b281292f21c1d91f590df0b2a2ca0c4529c26790775af8eb",
     "style.css": "d986014e1d48ce84c83083abb8a96fe0e899a31d9d49ff0102641b09b4134c19",
-    "fixes.css": "9b87b9bf1bf365d694be58be01cac9d423bb8849082b92cb79fca4d632fddad8",
+    "fixes.css": "07ef13e2ef2d0add9d62b8c5957410df4d1e8c89af79fb26ec41283b05bf651a",
     "atmosphere.js": "eea0cbefd80e766007d3413cf31dc558cf43da41f3a4e6ba72ce434323022638",
     "liked-tracks.json": "65adfeca34311d4338f5a9c41df4f72a0ecb2cd433a616431bc94372130e03f7",
     "instrument-cues.json": "e3fd7d95ec309eebafae5666d578c95f47ed81e639f228e8847e9ccf32365a28",
@@ -81,8 +81,8 @@
     "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.webp": "8bf46516eddd26578503b677f48155343108c2921a3ac7c23c8fa3af9b58113b",
     "audio/21-the-mark-remains.mp3": "1d51358fcc9d50b2cd9639cc317422535319388e6c2146342e694b70e3572429",
     "assets/covers/21-the-mark-remains.webp": "636b302339cdd921a56a83e6b86747fed777e0f6de0dcbd372a00ac800892434",
-    "index.html": "6792673cd8ee458ef668d98635e88d33eea5848b3498bbcaa76cc3c9083fb54d",
-    "app.js": "bab4f83d1337591e312253d8909a9755df31b4d8c77e4ec07070d3eee66ace59",
+    "index.html": "f8398abfaadea65c60eaf6fa7c33187dc8518f24c7bf9cfbd965c7e3f396f2cb",
+    "app.js": "896cad2a83d19c5cb53a9326a5b817f7ba4561ae8ab809f3ff668a4642a02c71",
     "audio/23-side-window-thank-you-universe.mp3": "a3394cd4eab19e3eea9bc6e435c6a972bab97d4a58207497627f6f1350ec1467",
     "assets/covers/23-side-window.webp": "b45b0b0e251fdc23ac6f23c155649d4db68cd2a0efcdfc4f80ec5212d95c31e4"
   }
