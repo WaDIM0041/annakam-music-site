@@ -1,5 +1,5 @@
 {
-  "release": "annakam-seo-20261116",
+  "release": "annakam-track21-20261117",
   "domain": "https://wadim0041.github.io/annakam-music-site/",
   "status": "prepared-for-review",
   "hashes": {
@@ -8,10 +8,8 @@
     "assets/video/winter-evening-1080-web.mp4": "9a99524dc731ae9846e716223fe81df0c68c987edcd9a00a9a34f8d2fb441c66",
     "assets/video/winter-evening-720.mp4": "4c51bd1c7f07afe23e16d0ed384eb05cd894732c92d7c86991c01a98f5833fee",
     "assets/video/winter-evening-poster.jpg": "2faa021e816364b5b281292f21c1d91f590df0b2a2ca0c4529c26790775af8eb",
-    "index.html": "d58a8b3ba2a7f3f2ae3d121d9142f6ee4be7f9995a9d9073ec3c1935af5afaa8",
     "style.css": "d986014e1d48ce84c83083abb8a96fe0e899a31d9d49ff0102641b09b4134c19",
     "fixes.css": "9b87b9bf1bf365d694be58be01cac9d423bb8849082b92cb79fca4d632fddad8",
-    "app.js": "88744deeda3f7724579a483087a4f5d8a5d926eba6290afd03e20027570999bc",
     "atmosphere.js": "eea0cbefd80e766007d3413cf31dc558cf43da41f3a4e6ba72ce434323022638",
     "liked-tracks.json": "65adfeca34311d4338f5a9c41df4f72a0ecb2cd433a616431bc94372130e03f7",
     "instrument-cues.json": "e3fd7d95ec309eebafae5666d578c95f47ed81e639f228e8847e9ccf32365a28",
@@ -80,6 +78,10 @@
     "assets/covers/liked/c490cf3f-92f9-4b2e-8aec-3ef305793666.webp": "982b9a844db5ffc5c93d6c74b0f1631b5a05e1c2711649e5a080c93e47143634",
     "assets/covers/liked/a5b9a75d-6fa5-47f2-92c8-276e6dea3fc0.webp": "bf9572afd1d5c54713616feef1a6b416cb80578675041b754e72aa964c6501d7",
     "assets/covers/liked/66b0692b-3db3-4ab9-8b37-7fb7ae8baacf.webp": "57682fd2833cd015b5c51a50a5a10e43225a9539fbc8ae45f1dd813e2336cfe0",
-    "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.webp": "8bf46516eddd26578503b677f48155343108c2921a3ac7c23c8fa3af9b58113b"
+    "assets/covers/liked/230f7bf9-7efe-4774-b105-526fb30936ee.webp": "8bf46516eddd26578503b677f48155343108c2921a3ac7c23c8fa3af9b58113b",
+    "index.html": "c01f9ae057c32ec80a9d618bb07808547c83d50737b6e1a5d4f26c12e7355f22",
+    "app.js": "6d91dc7194b7717b8b256eb4fa48c81a4c8dffed5e71065d0102da9ec6e0374d",
+    "audio/21-the-mark-remains.mp3": "1d51358fcc9d50b2cd9639cc317422535319388e6c2146342e694b70e3572429",
+    "assets/covers/21-the-mark-remains.webp": "636b302339cdd921a56a83e6b86747fed777e0f6de0dcbd372a00ac800892434"
   }
 }
