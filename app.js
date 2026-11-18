@@ -16,11 +16,11 @@
   }
  }
  const tracks=[
-  {id:'23-side-window',title:'23 - side Window 1 Thank You, Universe',file:'audio/23-side-window-thank-you-universe.mp3',cover:'23-side-window',trackNumber:23,word:'',tag:'ANNAKAM · TRACK 23',description:'Композиция из проекта «Опера Вселенной» — музыкальное размышление о благодарности.',duration:339.85},
-  {id:'21-the-mark-remains',title:'21 - The Mark Remains My ideas',file:'audio/21-the-mark-remains.mp3',cover:'21-the-mark-remains',trackNumber:21,word:'',tag:'ANNAKAM · TRACK 21',description:'Музыкальная история о следе, который остаётся с нами.',duration:217.61},
-  {id:'20-quiet-gratitude',title:'20 - Тихая благодарность медляк',file:'audio/20-quiet-gratitude.mp3',cover:'20-quiet-gratitude',trackNumber:20,word:'',tag:'ANNAKAM · TRACK 20',description:'Тихая мелодия благодарности для спокойного вечера и неспешного танца.',duration:219.17},
+  {id:'23-side-window',title:'23 - side Window 1 Thank You, Universe',file:'audio/23-side-window-thank-you-universe.mp3',cover:'23-side-window',trackNumber:23,word:'',tag:'makanna · TRACK 23',description:'Композиция из проекта «Опера Вселенной» — музыкальное размышление о благодарности.',duration:339.85},
+  {id:'21-the-mark-remains',title:'21 - The Mark Remains My ideas',file:'audio/21-the-mark-remains.mp3',cover:'21-the-mark-remains',trackNumber:21,word:'',tag:'makanna · TRACK 21',description:'Музыкальная история о следе, который остаётся с нами.',duration:217.61},
+  {id:'20-quiet-gratitude',title:'20 - Тихая благодарность медляк',file:'audio/20-quiet-gratitude.mp3',cover:'20-quiet-gratitude',trackNumber:20,word:'',tag:'makanna · TRACK 20',description:'Тихая мелодия благодарности для спокойного вечера и неспешного танца.',duration:219.17},
   {"id":"winter-evening-vocal-trance","title":"Зимний вечер (Vocal Trance)","file":"audio/winter-evening-vocal-trance.mp3","cover":"winter-evening-vocal-trance","word":"Зимний вечер.","tag":"VOCAL TRANCE · ELECTRONIC","description":"Вокальный транс с зимним настроением и мелодичным электронным звучанием.","duration":387.21},
-  {"id":"servants-of-earth","title":"Слуги Земли","file":"audio/servants-of-earth.mp3","cover":"servants-of-earth","word":"Слуги Земли","tag":"ANNAKAM · ORIGINAL SOUND","description":"Композиция из проекта «Опера Вселенной», посвящённая Земле и природе.","duration":356.37},
+  {"id":"servants-of-earth","title":"Слуги Земли","file":"audio/servants-of-earth.mp3","cover":"servants-of-earth","word":"Слуги Земли","tag":"makanna · ORIGINAL SOUND","description":"Композиция из проекта «Опера Вселенной», посвящённая Земле и природе.","duration":356.37},
   {"id":"this-quiet-hour-deep-slap-house-mix","title":"This Quiet Hour (Deep Slap House Mix)","file":"audio/this-quiet-hour-deep-slap-house-mix.mp3","cover":"this-quiet-hour-deep-slap-house-mix","word":"Quiet hour.","tag":"DEEP SLAP HOUSE · VOCAL","description":"Новая глубокая slap house-версия тихого часа: упругий бас, ночной ритм и вокальная атмосфера.","duration":266.48},
   {"id": "measured-groove", "title": "Measured Groove", "file": "audio/measured-groove.mp3", "cover": "measured-groove", "word": "Groove.", "tag": "MINIMAL GROOVE · ELECTRONIC", "description":"Ровный электронный грув для движения в собственном темпе.", "duration": 227.24},
   {"id":"silent-house-trance","title":"Тихий Дом — Trance of the Instruments (Trance RU)","file":"audio/silent-house-trance.mp3","cover":"silent-house-trance","word":"Сирени.","tag":"PROGRESSIVE TRANCE · DARK R&B · DUET","description":"Тёмный утренний дуэт: тишина дома, сирень и свет после ночи.","duration":343.76},
@@ -63,14 +63,14 @@
   catch{window.prompt('Скопируйте ссылку',url);}
  }
  function announceShare(text){const note=$('share-status');note.textContent=text;clearTimeout(announceShare.timer);announceShare.timer=setTimeout(()=>{note.textContent='';},3000);}
- $('share-site').addEventListener('click',()=>share('AnnaKam Music Studio',shareUrl()));
+ $('share-site').addEventListener('click',()=>share('makanna Music Studio',shareUrl()));
  const radioMount=$('vk-radio-mount'),radioButton=$('vk-radio-toggle');
  function closeVkRadio(){radioMount.replaceChildren();radioMount.hidden=true;radioButton.setAttribute('aria-expanded','false');radioButton.textContent='Открыть радио VK';$('vk-radio-status').textContent='';}
  radioButton.addEventListener('click',()=>{
   if(!radioMount.hidden){closeVkRadio();return;}
   stopLikedPlayer();pauseLocalForSuno();
   radioMount.hidden=false;radioButton.setAttribute('aria-expanded','true');radioButton.textContent='Закрыть радио VK';
-  const frame=document.createElement('iframe');frame.title='Радио AnnaKam ВКонтакте';frame.loading='lazy';frame.allow='autoplay; encrypted-media';
+  const frame=document.createElement('iframe');frame.title='Радио makanna ВКонтакте';frame.loading='lazy';frame.allow='autoplay; encrypted-media';
   frame.srcdoc='<!doctype html><html lang="ru"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:transparent}</style></head><body><div id="vk_playlist_6028933_4"></div><script src="https://vk.ru/js/api/openapi.js"><\/script><script>try{VK.Widgets.Playlist("vk_playlist_6028933_4",6028933,4,"",{})}catch(e){document.body.textContent="Не удалось открыть радио VK"}<\/script></body></html>';
   radioMount.append(frame);
  });
@@ -79,13 +79,13 @@
   tracks.forEach((t,i)=>{
    const card=document.createElement('article');card.className='track reveal';card.dataset.id=t.id;
    const cover=document.createElement('div');cover.className='cover '+t.cover;
-   cover.innerHTML='<span class="cover-number" aria-hidden="true">'+String(t.trackNumber||i+1).padStart(2,'0')+'</span><span class="cover-note" aria-hidden="true">ANNAKAM / ORIGINAL SOUND</span>'+(i===1?'<span class="cover-orbit" aria-hidden="true"></span>':'');
+   cover.innerHTML='<span class="cover-number" aria-hidden="true">'+String(t.trackNumber||i+1).padStart(2,'0')+'</span><span class="cover-note" aria-hidden="true">makanna / ORIGINAL SOUND</span>'+(i===1?'<span class="cover-orbit" aria-hidden="true"></span>':'');
    const artwork=document.createElement('img');artwork.className='cover-art';artwork.alt='';artwork.setAttribute('aria-hidden','true');artwork.width=1200;artwork.height=686;artwork.loading='lazy';artwork.decoding='async';artwork.fetchPriority='low';artwork.src=coverImages[t.id]||'assets/aurora-coast-mobile.webp';cover.prepend(artwork);const view=document.createElement('button');view.type='button';view.className='cover-view';view.setAttribute('aria-label','Открыть обложку: '+t.title);view.addEventListener('click',()=>openCover(artwork.src,t.title));cover.append(view);
    const word=document.createElement('span');word.className='cover-word';word.textContent=t.word;word.setAttribute('aria-hidden','true');cover.append(word);
    const play=document.createElement('button');play.className='cover-play';play.dataset.play=t.id;cover.append(play);
    const info=document.createElement('div');info.className='track-info';
    const names=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),description=document.createElement('p'),artist=document.createElement('p');
-   tag.className='eyebrow';tag.textContent=t.tag;title.textContent=t.title;description.className='track-description';description.textContent=t.description;artist.className='track-artist';artist.textContent='AnnaKam';
+   tag.className='eyebrow';tag.textContent=t.tag;title.textContent=t.title;description.className='track-description';description.textContent=t.description;artist.className='track-artist';artist.textContent='makanna';
    const eq=document.createElement('span');eq.className='track-equalizer';eq.setAttribute('aria-hidden','true');eq.innerHTML='<i></i><i></i><i></i>';eq.hidden=true;artist.append(eq);names.append(tag,title,description,artist);
    const tail=document.createElement('div');tail.className='track-tail';const duration=document.createElement('span');duration.className='track-duration';duration.textContent=format(t.duration)+' / MP3';
    const download=document.createElement('a');download.className='download';download.href=t.file;download.download=t.title+'.mp3';download.setAttribute('aria-label','Скачать '+t.title+' в MP3');download.title='Скачать MP3';download.innerHTML=icon('down');const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='share-track';shareButton.textContent='Поделиться';shareButton.setAttribute('aria-label','Поделиться: '+t.title);shareButton.addEventListener('click',()=>share(t.title,shareUrl(t.id)));tail.append(duration,download,shareButton);
@@ -127,7 +127,7 @@
  }
  function updateMedia(){
   if(!('mediaSession'in navigator)||!('MediaMetadata'in window))return;
-  const image=sessionArtwork[tracks[current].id]||'assets/covers/media-session/explorations.webp';navigator.mediaSession.metadata=new MediaMetadata({title:tracks[current].title,artist:'AnnaKam',album:'AnnaKam Originals',artwork:[{src:new URL(image,location.href).href,sizes:'512x512',type:'image/webp'}]});
+  const image=sessionArtwork[tracks[current].id]||'assets/covers/media-session/explorations.webp';navigator.mediaSession.metadata=new MediaMetadata({title:tracks[current].title,artist:'makanna',album:'makanna Originals',artwork:[{src:new URL(image,location.href).href,sizes:'512x512',type:'image/webp'}]});
  }
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
@@ -226,7 +226,7 @@
     preview.fetchPriority='low';
     preview.src=item.cover;
     const info=document.createElement('div'),tag=document.createElement('p'),title=document.createElement('h3'),artist=document.createElement('span');
-    tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'AnnaKam';info.append(tag,title,artist);
+    tag.className='eyebrow';tag.textContent='SUNO · ВСТРОЕННЫЙ ПЛЕЕР';title.textContent=item.title;artist.textContent=item.artist||'makanna';info.append(tag,title,artist);
     const actions=document.createElement('div');actions.className='liked-actions';
     const listen=document.createElement('button');listen.className='liked-play';listen.type='button';listen.textContent='Слушать в Suno';listen.setAttribute('aria-pressed','false');listen.setAttribute('aria-label','Открыть плеер: '+item.title);
     const link=document.createElement('a');link.href=item.sourceUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='↗';link.setAttribute('aria-label','Открыть '+item.title+' на Suno');link.addEventListener('click',()=>{stopLikedPlayer();pauseLocalForSuno();closeVkRadio();});const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='share-track liked-share';shareButton.textContent='Поделиться';shareButton.setAttribute('aria-label','Поделиться: '+item.title);shareButton.addEventListener('click',()=>share(item.title,shareUrl('liked-'+item.id)));actions.append(listen,link,shareButton);head.append(info,actions);
