@@ -137,7 +137,7 @@
   if(index<0||index>=tracks.length)return;
   stopLikedPlayer();closeVkRadio();clearRecovery();
   const id=++requestId;failed=false;sunoActive=false;playIntent=true;recoveryAttempts=0;recoveredAt=0;playbackState='loading';message('');setBuffer(true);
-  if(current!==index){audio.pause();current=index;audio.src=tracks[index].file;updateTime();updateMedia();}else if(audio.error){audio.load();}
+  if(current!==index||audio.src!==new URL(tracks[index].file,document.baseURI).href){audio.pause();current=index;audio.src=tracks[index].file;updateTime();updateMedia();}else if(audio.error){audio.load();}
   lastTime=audio.currentTime||0;update();
   try{const routeRequest=window.AnnaAtmosphere?.connectAudio(audio);const route=routeRequest&&typeof routeRequest.then==='function'?await routeRequest:routeRequest;if(id!==requestId)return;if(route?.mode==='blocked')throw Object.assign(new Error('Audio route interrupted'),{name:'AudioContextBlockedError'});const playRequest=audio.play();armRecovery(id);await playRequest;if(id!==requestId)return;if(!audio.paused&&audio.readyState>=2){clearRecovery();playbackState='playing';setBuffer(false);message('');}else armRecovery(id);}
   catch(error){if(id!==requestId||error?.name==='AbortError')return;clearRecovery();playIntent=false;setBuffer(false);if(error?.name==='NotAllowedError'){failed=false;playbackState='blocked';window.AnnaAtmosphere?.setAudioPlaying(false);message(mediaErrorText(error));}else if(error?.name==='AudioContextBlockedError'){failed=false;playbackState='blocked';window.AnnaAtmosphere?.setAudioPlaying(false);message('Звук был прерван аудиосистемой. Нажмите «Воспроизвести», чтобы продолжить.');}else{failPlayback(mediaErrorText(error));}}
@@ -258,6 +258,7 @@
  render();
  const sharedTrack=new URL(location.href).searchParams.get('track');
  const sharedIndex=tracks.findIndex(track=>track.id===sharedTrack);
- if(sharedIndex>=0){current=sharedIndex;audio.src=tracks[current].file;cards.get(tracks[current].id).card.scrollIntoView({block:'center'});}
+ if(sharedIndex>=0){current=sharedIndex;cards.get(tracks[current].id).card.scrollIntoView({block:'center'});}
+ audio.src=tracks[current].file;
  renderLiked();update();updateTime();updateMedia();document.body.classList.add('enhanced');
 })();
