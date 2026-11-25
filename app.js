@@ -45,15 +45,47 @@
  const sessionArtwork={ 'long-winter-remix':'assets/covers/media-session/long-winter-remix.webp', '01-winter-evening-light':'assets/covers/media-session/24-winter-evening-light.webp', 'winter-evening-vocal-trance':'assets/covers/media-session/winter-evening-vocal-trance.webp','servants-of-earth':'assets/covers/media-session/servants-of-earth.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/media-session/this-quiet-hour-deep-slap-house-mix.webp','measured-groove':'assets/covers/media-session/measured-groove.webp','silent-house-trance':'assets/covers/media-session/silent-house-trance.webp','wake-thanks-violin':'assets/covers/media-session/wake-thanks-violin.webp','wake-thanks-ru-1':'assets/covers/media-session/wake-thanks-ru-1.webp','own-wave-trance-v9':'assets/covers/media-session/own-wave-trance-v9.webp','quiet-hour':'assets/covers/media-session/quiet-hour.webp',pulse:'assets/covers/media-session/explorations.webp',chrono:'assets/covers/media-session/explorations.webp' };
  const $=id=>document.getElementById(id),audio=$('audio'),list=$('tracks'),toggle=$('toggle'),seek=$('seek'),queue=$('queue-panel');
  let current=0,requestId=0,buffering=false,failed=false,sunoActive=false,activeLikedPlayer=null;
- let playbackState='idle',playIntent=false,recoveryAttempts=0,recoveryTimer=0,recoveredAt=0,lastTime=0,pendingSeek=null,repeatMode='all';
+ let playbackState='idle',playIntent=false,recoveryAttempts=0,recoveryTimer=0,pendingSeek=null,repeatMode='all';
  const format=n=>Number.isFinite(n)?Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0'):'—:—';
  const icon=name=>'<svg aria-hidden="true"><use href="#i-'+name+'"/></svg>';
  const cards=new Map();
- function message(text,retry=false,next=false){$('status-text').textContent=text;$('status').hidden=!text;$('retry').hidden=!retry;$('error-next').hidden=!next;}
+ function message(text,retry=false,next=false){$('status-text').textContent=text;$('status').hidden=!text;$('retry').hidden=!retry;$('error-next').hidden=!next;if(text)showPlayer();}
  function clearRecovery(){clearTimeout(recoveryTimer);recoveryTimer=0;}
- function mediaErrorText(error){if(error?.name==='NotAllowedError')return 'Автозапуск запрещён браузером. Нажмите «Воспроизвести».';if(error?.name==='NotSupportedError')return 'Браузер не может декодировать этот MP3. Можно повторить или перейти дальше.';const code=audio.error?.code;if(code===2)return 'Передача MP3 прервалась. Можно повторить или перейти дальше.';if(code===3)return 'Не удалось декодировать MP3. Можно повторить или перейти дальше.';if(code===4)return 'Формат MP3 не поддерживается браузером. Можно перейти дальше.';if(error?.name==='TimeoutError')return 'Трек не загрузился вовремя. Можно повторить или перейти дальше.';return 'Не удалось включить трек. Проверьте соединение или перейдите дальше.';}
+ function mediaErrorText(error){if(error?.name==='NotAllowedError')return 'Автозапуск запрещён браузером. Нажмите «Воспроизвести».';const code=audio.error?.code;if(code===2)return 'Передача MP3 прервалась. Можно повторить или перейти дальше.';if(code===3)return 'Не удалось декодировать MP3. Можно повторить или перейти дальше.';if(code===4||error?.name==='NotSupportedError')return 'Не удалось открыть MP3. Файл недоступен или формат не поддерживается. Можно повторить или перейти дальше.';if(error?.name==='TimeoutError')return 'Трек не загрузился вовремя. Можно повторить или перейти дальше.';return 'Не удалось включить трек. Проверьте соединение или перейдите дальше.';}
  function failPlayback(text){clearRecovery();playIntent=false;failed=true;playbackState='error';audio.pause();window.AnnaAtmosphere?.setAudioPlaying(false);setBuffer(false);message(text,true,true);update();}
- function armRecovery(token){clearRecovery();if(!playIntent||audio.paused)return;recoveryTimer=setTimeout(async()=>{if(token!==requestId||!playIntent||audio.paused)return;if(recoveryAttempts){failPlayback('Связь с треком потеряна после одной попытки восстановления. Можно повторить или перейти дальше.');return;}recoveryAttempts=1;playbackState='recovering';message('Связь прервалась. Восстанавливаем воспроизведение…');setBuffer(true);update();const position=Number.isFinite(audio.currentTime)?audio.currentTime:0;pendingSeek=position;try{audio.load();await audio.play();if(token!==requestId)return;if(!audio.paused&&audio.readyState>=2){clearRecovery();playbackState='playing';setBuffer(false);message('');}else armRecovery(token);}catch(error){if(token!==requestId)return;if(error?.name==='NotAllowedError'){playIntent=false;playbackState='blocked';setBuffer(false);message(mediaErrorText(error));update();}else failPlayback(mediaErrorText(error));}},10000);}
+ function armRecovery(token){
+  if(recoveryTimer||!playIntent||audio.paused||audio.ended)return;
+  const observedTime=audio.currentTime;
+  recoveryTimer=setTimeout(()=>{
+   recoveryTimer=0;
+   if(token!==requestId||!playIntent||audio.paused||audio.ended)return;
+   if(audio.seeking||audio.currentTime>observedTime+0.05){
+    if(audio.seeking||audio.readyState<audio.HAVE_FUTURE_DATA)armRecovery(token);
+    return;
+   }
+   if(recoveryAttempts){
+    failPlayback('Связь с треком потеряна после одной попытки восстановления. Можно повторить или перейти дальше.');
+    return;
+   }
+   recoveryAttempts++;
+   const retryToken=++requestId;
+   playbackState='recovering';
+   pendingSeek={token:retryToken,position:audio.currentTime};
+   message('Связь прервалась. Восстанавливаем воспроизведение…');
+   setBuffer(true);
+   update();
+   audio.load();
+   const retry=audio.play();
+   armRecovery(retryToken);
+   retry.catch(error=>{
+    if(retryToken!==requestId||!playIntent)return;
+    if(error.name==='NotAllowedError'){
+     clearRecovery();playIntent=false;playbackState='blocked';
+     setBuffer(false);message(mediaErrorText(error),true,true);update();
+    }else failPlayback(mediaErrorText(error));
+   });
+  },10000);
+ }
  function setRepeatMode(mode){repeatMode=mode;$('repeat').setAttribute('aria-pressed',String(mode==='all'));$('repeat').setAttribute('aria-label',mode==='all'?'Выключить повтор плейлиста':'Включить повтор плейлиста');$('repeat').title=mode==='all'?'Повтор плейлиста включён':'Повтор плейлиста выключен';}
  function setBuffer(value){buffering=value;document.querySelector('.player').classList.toggle('is-buffering',value);toggle.setAttribute('aria-busy',String(value));}
  function shareUrl(trackId){
@@ -111,7 +143,11 @@
   document.querySelector('.core-play-label').textContent=playing||pending?'Пауза':'Слушать';
   for(const track of tracks){const c=cards.get(track.id),active=track===t;c.card.classList.toggle('active',active);c.play.innerHTML=icon(active&&(playing||pending)?'pause':'play');c.play.setAttribute('aria-label',(active&&(playing||pending)?'Пауза: ':'Слушать: ')+track.title);c.eq.hidden=!active;}
   document.querySelectorAll('.queue-track').forEach(q=>{q.classList.toggle('active',q.dataset.play===t.id);q.setAttribute('aria-label',(q.dataset.play===t.id&&(playing||pending)?'Пауза: ':'Слушать: ')+tracks.find(x=>x.id===q.dataset.play).title);});
-  if('mediaSession'in navigator){navigator.mediaSession.playbackState=playing?'playing':playbackState==='ended'?'none':'paused';}
+  if('mediaSession'in navigator){
+   if(playing)navigator.mediaSession.playbackState='playing';
+   else if(!playIntent)navigator.mediaSession.playbackState=
+    playbackState==='idle'||playbackState==='ended'||sunoActive?'none':'paused';
+  }
  }
  function pauseLocalForSuno(){sunoActive=true;playIntent=false;requestId++;clearRecovery();playbackState='paused';audio.pause();setBuffer(false);message('Локальный MP3 приостановлен перед открытием внешнего плеера.');update();}
  function stopLikedPlayer(){
@@ -136,11 +172,35 @@
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
   stopLikedPlayer();closeVkRadio();clearRecovery();
-  const id=++requestId;failed=false;sunoActive=false;playIntent=true;recoveryAttempts=0;recoveredAt=0;playbackState='loading';message('');setBuffer(true);
-  if(current!==index||audio.src!==new URL(tracks[index].file,document.baseURI).href){audio.pause();current=index;audio.src=tracks[index].file;updateTime();updateMedia();}else if(audio.error){audio.load();}
-  lastTime=audio.currentTime||0;update();
-  try{const routeRequest=window.AnnaAtmosphere?.connectAudio(audio);const route=routeRequest&&typeof routeRequest.then==='function'?await routeRequest:routeRequest;if(id!==requestId)return;if(route?.mode==='blocked')throw Object.assign(new Error('Audio route interrupted'),{name:'AudioContextBlockedError'});const playRequest=audio.play();armRecovery(id);await playRequest;if(id!==requestId)return;if(!audio.paused&&audio.readyState>=2){clearRecovery();playbackState='playing';setBuffer(false);message('');}else armRecovery(id);}
-  catch(error){if(id!==requestId||error?.name==='AbortError')return;clearRecovery();playIntent=false;setBuffer(false);if(error?.name==='NotAllowedError'){failed=false;playbackState='blocked';window.AnnaAtmosphere?.setAudioPlaying(false);message(mediaErrorText(error));}else if(error?.name==='AudioContextBlockedError'){failed=false;playbackState='blocked';window.AnnaAtmosphere?.setAudioPlaying(false);message('Звук был прерван аудиосистемой. Нажмите «Воспроизвести», чтобы продолжить.');}else{failPlayback(mediaErrorText(error));}}
+  const id=++requestId;failed=false;sunoActive=false;playIntent=true;recoveryAttempts=0;pendingSeek=null;playbackState='loading';message('');setBuffer(true);
+  if(current!==index||audio.src!==new URL(tracks[index].file,document.baseURI).href){current=index;audio.src=tracks[index].file;updateTime();updateMedia();}else if(audio.error){audio.load();}
+  update();
+  try{
+   let route=window.AnnaAtmosphere?.connectAudio(audio);
+   if(route?.then)route=await route;
+   if(id!==requestId)return;
+   if(route?.mode==='blocked'){
+    playIntent=false;playbackState='blocked';setBuffer(false);
+    window.AnnaAtmosphere?.setAudioPlaying(false);
+    message('Аудиосистема прервала звук. Нажмите «Воспроизвести», чтобы продолжить.',true,true);
+    update();
+    return;
+   }
+   const started=audio.play();
+   armRecovery(id);
+   await started;
+   if(id!==requestId)return;
+   if(!audio.paused&&audio.readyState>=audio.HAVE_CURRENT_DATA){
+    clearRecovery();playbackState='playing';setBuffer(false);message('');
+   }
+  }catch(error){
+   if(id!==requestId)return;
+   if(error.name==='NotAllowedError'){
+    clearRecovery();playIntent=false;playbackState='blocked';setBuffer(false);
+    window.AnnaAtmosphere?.setAudioPlaying(false);
+    message(mediaErrorText(error),true,true);
+   }else failPlayback(mediaErrorText(error));
+  }
   update();
  }
  function pausePlayback(){requestId++;playIntent=false;clearRecovery();audio.pause();setBuffer(false);if(playbackState!=='error')playbackState='paused';message('');update();}
@@ -165,20 +225,42 @@
  $('volume').addEventListener('input',()=>{audio.volume=+$('volume').value;audio.muted=false;});
  $('mute').addEventListener('click',()=>{audio.muted=!audio.muted;});
  audio.addEventListener('volumechange',()=>{const muted=audio.muted||audio.volume===0;$('mute').innerHTML=icon(muted?'muted':'volume');$('mute').setAttribute('aria-label',muted?'Включить звук':'Выключить звук');$('volume').value=String(audio.muted?0:audio.volume);});
- audio.addEventListener('loadedmetadata',()=>{if(pendingSeek!==null){const position=pendingSeek;pendingSeek=null;try{audio.currentTime=position;}catch{}}updateTime();setBuffer(false);});
+ audio.addEventListener('loadedmetadata',()=>{if(pendingSeek?.token===requestId){const {position}=pendingSeek;pendingSeek=null;if(Number.isFinite(position)&&position>0)audio.currentTime=position;}updateTime();setBuffer(false);});
  audio.addEventListener('timeupdate',updateTime);
   audio.addEventListener('waiting',()=>{if(!audio.paused){setBuffer(true);if(playIntent){message('Загружаем музыку…');armRecovery(requestId);}}});
- audio.addEventListener('pause',()=>{setBuffer(false);if(!failed&&!sunoActive&&playbackState!=='blocked'&&playbackState!=='loading'&&playbackState!=='recovering'){if(playIntent&&!audio.ended){playIntent=false;clearRecovery();message('Воспроизведение приостановлено системой. Нажмите «Воспроизвести», чтобы продолжить.');}else if(!playIntent)message('');playbackState='paused';}else if(!failed&&!sunoActive&&playbackState!=='blocked')message('');window.AnnaAtmosphere?.setAudioPlaying(false);update();});
+ audio.addEventListener('pause',()=>{
+  if(!audio.paused||(audio.ended&&playIntent))return;
+  setBuffer(false);if(!failed&&!sunoActive&&playbackState!=='blocked'&&playbackState!=='loading'&&playbackState!=='recovering'){if(playIntent&&!audio.ended){playIntent=false;clearRecovery();message('Воспроизведение приостановлено системой. Нажмите «Воспроизвести», чтобы продолжить.');}else if(!playIntent)message('');playbackState='paused';}else if(!failed&&!sunoActive&&playbackState!=='blocked')message('');window.AnnaAtmosphere?.setAudioPlaying(false);update();});
  audio.addEventListener('playing',()=>{if(!playIntent||audio.paused)return;clearRecovery();playbackState='playing';window.AnnaAtmosphere?.setAudioPlaying(true);failed=false;setBuffer(false);message('');update();});
  window.addEventListener('anna-audio-context-state',event=>{if(event.detail?.state!=='running'&&playIntent&&playbackState==='playing'){requestId++;playIntent=false;clearRecovery();audio.pause();playbackState='blocked';setBuffer(false);message('Аудиосистема прервала звук. Нажмите «Воспроизвести», чтобы продолжить.');update();}});
  audio.addEventListener('play',update);
- audio.addEventListener('ended',()=>{if(!audio.ended)return;if(current+1<tracks.length)playTrack(current+1);else if(repeatMode==='all')playTrack(0);else{playIntent=false;playbackState='ended';setBuffer(false);window.AnnaAtmosphere?.setAudioPlaying(false);update();updateTime();}});
+ audio.addEventListener('ended',()=>{if(!audio.ended||!playIntent)return;clearRecovery();if(current+1<tracks.length)playTrack(current+1);else if(repeatMode==='all')playTrack(0);else{playIntent=false;playbackState='ended';setBuffer(false);window.AnnaAtmosphere?.setAudioPlaying(false);update();updateTime();}});
  audio.addEventListener('error',()=>{if(!playIntent)return;failPlayback(mediaErrorText(audio.error));});
  audio.addEventListener('abort',()=>{if(playIntent&&playbackState==='loading')armRecovery(requestId);});
  audio.addEventListener('stalled',()=>{if(playIntent&&!audio.paused)armRecovery(requestId);});
- document.addEventListener('visibilitychange',()=>{if(!document.hidden&&playIntent&&!audio.paused&&playbackState==='playing')armRecovery(requestId);});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTime();});
  const coverDialog=document.createElement('dialog');coverDialog.className='cover-dialog';coverDialog.setAttribute('aria-label','Просмотр обложки');coverDialog.innerHTML='<button type="button" class="cover-close" aria-label="Закрыть">×</button><img alt="">';document.body.append(coverDialog);coverDialog.querySelector('button').addEventListener('click',()=>coverDialog.close());coverDialog.addEventListener('click',e=>{if(e.target===coverDialog)coverDialog.close();});function openCover(src,title){coverDialog.querySelector('img').src=src;coverDialog.querySelector('img').alt='Обложка: '+title;coverDialog.showModal();}
- const player=document.querySelector('.player');let hidePlayerTimer;function hidePlayer(){clearTimeout(hidePlayerTimer);player.classList.add('player-hidden');}function showPlayer(){player.classList.remove('player-hidden');clearTimeout(hidePlayerTimer);hidePlayerTimer=setTimeout(()=>{if(!(matchMedia('(hover: hover)').matches&&player.matches(':hover'))&&!player.querySelector(':focus-visible')&&queue.hidden)hidePlayer();},4000);}document.addEventListener('pointerup',showPlayer,{passive:true});player.addEventListener('pointerenter',()=>clearTimeout(hidePlayerTimer));player.addEventListener('pointerleave',showPlayer);player.addEventListener('focusin',()=>clearTimeout(hidePlayerTimer));player.addEventListener('focusout',()=>setTimeout(showPlayer,0));audio.addEventListener('playing',showPlayer);audio.addEventListener('ended',hidePlayer);hidePlayer();
+ const player=document.querySelector('.player');
+ let hidePlayerTimer;
+ function hidePlayer(){
+  clearTimeout(hidePlayerTimer);
+  if(!$('status').hidden||!queue.hidden||player.contains(document.activeElement))return;
+  player.classList.add('player-hidden');
+ }
+ function showPlayer(){
+  player.classList.remove('player-hidden');clearTimeout(hidePlayerTimer);
+  hidePlayerTimer=setTimeout(()=>{
+   if(!(matchMedia('(hover: hover)').matches&&player.matches(':hover')))hidePlayer();
+  },4000);
+ }
+ document.addEventListener('pointerup',showPlayer,{passive:true});
+ player.addEventListener('pointerenter',()=>clearTimeout(hidePlayerTimer));
+ player.addEventListener('pointerleave',showPlayer);
+ player.addEventListener('focusin',showPlayer);
+ player.addEventListener('focusout',()=>setTimeout(showPlayer,0));
+ audio.addEventListener('playing',showPlayer);
+ hidePlayer();
+
  const homeShortcut=document.querySelector('.floating-home');function syncHomeShortcut(){homeShortcut.classList.toggle('is-visible',document.querySelector('.hero').getBoundingClientRect().bottom<=0);}addEventListener('scroll',syncHomeShortcut,{passive:true});addEventListener('resize',syncHomeShortcut);syncHomeShortcut();
  const heroSphere=document.querySelector('.sound-object');
  const sphereSlot=document.createElement('div');

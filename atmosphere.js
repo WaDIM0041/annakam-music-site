@@ -4,6 +4,9 @@
  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
  const coarse=matchMedia('(pointer: coarse)');
  const lightLayout=matchMedia('(max-width: 800px), (pointer: coarse)');
+ // Bind the audio route once for this document. Connecting a media element
+ // to Web Audio cannot be undone by switching the visual effects off.
+ const nativeAudio = coarse.matches || navigator.maxTouchPoints > 0;
  const lowPower=navigator.hardwareConcurrency>0&&navigator.hardwareConcurrency<=4;
  const button=document.getElementById('effects'), world=document.querySelector('.world');
  let preference=true;
@@ -224,7 +227,7 @@
   connectAudio(element){
    audio=element;
 
-   if(!enabled&&!source)return{mode:'native'};
+   if(nativeAudio||(!enabled&&!source))return{mode:'native'};
    try{
     const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return{mode:'native'};
     if(!ctxAudio){ctxAudio=new Audio();ctxAudio.addEventListener('statechange',()=>{window.dispatchEvent(new CustomEvent('anna-audio-context-state',{detail:{state:ctxAudio.state}}));schedule();});source=ctxAudio.createMediaElementSource(audio);analyser=ctxAudio.createAnalyser();analyser.fftSize=256;analyser.smoothingTimeConstant=.55;bins=new Uint8Array(analyser.frequencyBinCount);source.connect(analyser);analyser.connect(ctxAudio.destination);}
