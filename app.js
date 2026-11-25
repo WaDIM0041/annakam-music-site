@@ -37,12 +37,12 @@
  const coverImages={
   'long-winter-remix':'assets/covers/long-winter-remix.webp',
   '01-winter-evening-light':'assets/covers/24-winter-evening-light.webp',
-  '23-side-window':'assets/covers/23-side-window.webp',
-  '21-the-mark-remains':'assets/covers/21-the-mark-remains.webp',
-  '20-quiet-gratitude':'assets/covers/20-quiet-gratitude.webp',
-  'winter-evening-vocal-trance':'assets/covers/winter-evening-river-v3.webp','servants-of-earth':'assets/covers/servants-of-earth-wide-v2.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/quiet-hour-wide.webp','measured-groove':'assets/covers/measured-groove-anna-v2.webp','silent-house-trance':'assets/covers/silent-house-trance.jpg','wake-thanks-violin':'assets/covers/wake-thanks-city-v2.webp','wake-thanks-ru-1':'assets/covers/wake-thanks-pencil-wide.webp','own-wave-trance-v9':'assets/covers/own-wave-trance-v10.webp','quiet-hour':'assets/covers/quiet-hour-v2.webp',pulse:'assets/aurora-coast-mobile.webp',chrono:'assets/landscape-kamchatka-stars-v3.webp'
+  '23-side-window':'assets/covers/brand-23-side-window.svg',
+  '21-the-mark-remains':'assets/covers/brand-21-the-mark-remains.svg',
+  '20-quiet-gratitude':'assets/covers/brand-20-quiet-gratitude.svg',
+  'winter-evening-vocal-trance':'assets/covers/brand-winter-evening-vocal-trance.svg','servants-of-earth':'assets/covers/brand-servants-of-earth.svg','this-quiet-hour-deep-slap-house-mix':'assets/covers/quiet-hour-wide.webp','measured-groove':'assets/covers/brand-measured-groove.svg','silent-house-trance':'assets/covers/silent-house-trance.jpg','wake-thanks-violin':'assets/covers/brand-wake-thanks-violin.svg','wake-thanks-ru-1':'assets/covers/wake-thanks-pencil-wide.webp','own-wave-trance-v9':'assets/covers/own-wave-trance-v10.webp','quiet-hour':'assets/covers/quiet-hour-v2.webp',pulse:'assets/aurora-coast-mobile.webp',chrono:'assets/landscape-kamchatka-stars-v3.webp'
  };
- const sessionArtwork={ 'long-winter-remix':'assets/covers/media-session/long-winter-remix.webp', '01-winter-evening-light':'assets/covers/media-session/24-winter-evening-light.webp', 'winter-evening-vocal-trance':'assets/covers/media-session/winter-evening-vocal-trance.webp','servants-of-earth':'assets/covers/media-session/servants-of-earth.webp','this-quiet-hour-deep-slap-house-mix':'assets/covers/media-session/this-quiet-hour-deep-slap-house-mix.webp','measured-groove':'assets/covers/media-session/measured-groove.webp','silent-house-trance':'assets/covers/media-session/silent-house-trance.webp','wake-thanks-violin':'assets/covers/media-session/wake-thanks-violin.webp','wake-thanks-ru-1':'assets/covers/media-session/wake-thanks-ru-1.webp','own-wave-trance-v9':'assets/covers/media-session/own-wave-trance-v9.webp','quiet-hour':'assets/covers/media-session/quiet-hour.webp',pulse:'assets/covers/media-session/explorations.webp',chrono:'assets/covers/media-session/explorations.webp' };
+ const sessionArtwork={ '23-side-window':'assets/covers/brand-23-side-window.svg', '21-the-mark-remains':'assets/covers/brand-21-the-mark-remains.svg', '20-quiet-gratitude':'assets/covers/brand-20-quiet-gratitude.svg', 'long-winter-remix':'assets/covers/media-session/long-winter-remix.webp', '01-winter-evening-light':'assets/covers/media-session/24-winter-evening-light.webp', 'winter-evening-vocal-trance':'assets/covers/brand-winter-evening-vocal-trance.svg','servants-of-earth':'assets/covers/brand-servants-of-earth.svg','this-quiet-hour-deep-slap-house-mix':'assets/covers/media-session/this-quiet-hour-deep-slap-house-mix.webp','measured-groove':'assets/covers/brand-measured-groove.svg','silent-house-trance':'assets/covers/media-session/silent-house-trance.webp','wake-thanks-violin':'assets/covers/brand-wake-thanks-violin.svg','wake-thanks-ru-1':'assets/covers/media-session/wake-thanks-ru-1.webp','own-wave-trance-v9':'assets/covers/media-session/own-wave-trance-v9.webp','quiet-hour':'assets/covers/media-session/quiet-hour.webp',pulse:'assets/covers/media-session/explorations.webp',chrono:'assets/covers/media-session/explorations.webp' };
  const $=id=>document.getElementById(id),audio=$('audio'),list=$('tracks'),toggle=$('toggle'),seek=$('seek'),queue=$('queue-panel');
  let current=0,requestId=0,buffering=false,failed=false,sunoActive=false,activeLikedPlayer=null;
  let playbackState='idle',playIntent=false,recoveryAttempts=0,recoveryTimer=0,pendingSeek=null,repeatMode='all';
@@ -137,6 +137,7 @@
   toggle.innerHTML=icon(playing||pending?'pause':'play');toggle.setAttribute('aria-label',playing||pending?'Пауза':'Воспроизвести');
   $('now-title').textContent=t.title;$('now-label').textContent=playing?'СЕЙЧАС ИГРАЕТ':failed?'ОШИБКА ВОСПРОИЗВЕДЕНИЯ':pending?'ЗАГРУЗКА ТРЕКА':'ВЫБРАННЫЙ ТРЕК';
   $('player-cover').className='mini-cover '+t.cover;
+  $('player-cover').style.backgroundImage=coverImages[t.id]?'url("'+coverImages[t.id]+'")':'';
   $('object-state').textContent=playing?'ВЫ НА СВОЕЙ ВОЛНЕ':pending?'ТРЕК ЗАГРУЖАЕТСЯ':'ВАША ВОЛНА ЖДЁТ';
   document.querySelector('.sound-button').dataset.play=t.id;document.querySelector('.sound-button').setAttribute('aria-label',(playing||pending?'Пауза: ':'Слушать: ')+t.title);
   document.querySelector('.core-play-icon').innerHTML=icon(playing||pending?'pause':'play');
@@ -167,7 +168,7 @@
  }
  function updateMedia(){
   if(!('mediaSession'in navigator)||!('MediaMetadata'in window))return;
-  const image=sessionArtwork[tracks[current].id]||'assets/covers/media-session/explorations.webp';navigator.mediaSession.metadata=new MediaMetadata({title:tracks[current].title,artist:'makanna',album:'makanna Originals',artwork:[{src:new URL(image,location.href).href,sizes:'512x512',type:'image/webp'}]});
+  const image=sessionArtwork[tracks[current].id]||'assets/covers/media-session/explorations.webp';navigator.mediaSession.metadata=new MediaMetadata({title:tracks[current].title,artist:'makanna',album:'makanna Originals',artwork:[{src:new URL(image,location.href).href,sizes:image.endsWith('.svg')?'1200x686':'512x512',type:image.endsWith('.svg')?'image/svg+xml':'image/webp'}]});
  }
  async function playTrack(index){
   if(index<0||index>=tracks.length)return;
